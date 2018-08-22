@@ -1,5 +1,5 @@
 class D3Nodes {
-    constructor(reducer) {
+    constructor() {
     }
     /* ****************************************************************
      * Utility
@@ -85,51 +85,6 @@ class D3Nodes {
             .exit(nodes.list, this._id)
             .remove();
     }
-    circle_r (d)  {
-        let cls = d._class;
-
-        if (cls=='ALGORITHM') return 55;
-        if (cls=='BOOK')      return 33;
-        if (cls=='ARXIV')     return 22;
-
-        return 22;
-    }
-    circle_fill (d) {
-        let cls = d._class;
-
-        if (cls=='ALGORITHM') return '#fef4f4';
-        if (cls=='BOOK')      return '#eaf4fc';
-        if (cls=='ARXIV')     return '#e0ebaf';
-
-        return '#fff';
-    }
-    circle_stroke (d) {
-        let cls = d._class;
-
-        if (cls=='ALGORITHM') return '#fdeff2';
-        if (cls=='BOOK')      return '#89c3eb';
-        if (cls=='ARXIV')     return '#c7dc68';
-
-        return '#fff';
-    }
-    circle_strokeWidth (d) {
-        let cls = d._class;
-
-        if (cls=='ALGORITHM') return 8;
-        if (cls=='BOOK')      return 4;
-        if (cls=='ARXIV')     return 2;
-
-        return 2;
-    }
-    circleLable_fontSize (d) {
-        let cls = d._class;
-
-        if (cls=='ALGORITHM') return 36;
-        if (cls=='BOOK')      return 18;
-        if (cls=='ARXIV')     return 14;
-
-        return 14;
-    }
     drawNodes_Add (g, nodes, simulator) {
         let new_nodes = g.selectAll('g.node')
             .data(nodes.list, this._id)
@@ -144,10 +99,10 @@ class D3Nodes {
         let circles = g_list.append('circle')
             .attr('cx', 100)
             .attr('cy', 90)
-            .attr('r', this.circle_r)
-            .attr('fill', this.circle_fill)
-            .attr('stroke', this.circle_stroke)
-            .attr('stroke-width', this.circle_strokeWidth)
+            .attr('r', (d) => { return d.circle.r; })
+            .attr('fill', (d) => { return d.circle.fill; })
+            .attr('stroke', (d) => { return d.circle.stroke.color; })
+            .attr('stroke-width', (d) => { return d.circle.stroke.width; })
             .call(d3.drag()
                   .on("start", (d) => {
                       this.nodeDrag_start(d, simulator);
@@ -167,22 +122,8 @@ class D3Nodes {
             .attr('class', 'circle-label')
             .attr('fill', 'black')
             .attr('stroke', 'black')
-            .attr('font-size', this.circleLable_fontSize)
-            .text((d) => {
-                let cls = d._class;
-
-                d.label_length = 1;
-
-                if (cls=='ALGORITHM') return 'ア';
-
-                if (cls=='BOOK') return '書';
-                if (cls=='ARXIV') {
-                    d.label_length = 2;
-                    return '論A';
-                }
-
-                return '?';
-            })
+            .attr('font-size', (d) => { return d.label.font.size; })
+            .text((d) => { return d.label.text; })
             .on('click', (d) => {
                 this._callback('click-circle', d);
             });
@@ -193,16 +134,7 @@ class D3Nodes {
         //     .attr('stroke', 'black')
         //     .attr('font-family', "helvetica, arial, 'hiragino kaku gothic pro', meiryo, 'ms pgothic', sans-serif")
         //     .attr('font-weight', 'lighter')
-        //     .text((d) => {
-        //         let cls = d._class;
-
-        //         if (cls=='ALGORITHM') return d.name;
-        //         if (cls=='BOOK')      return d.title;
-        //         if (cls=='ARXIV')     return d.title;
-
-        //         return '?';
-        //     });
-
+        //     .text((d) => { return d.name; });
     }
     drawNodes(d3svg, nodes, simulator) {
         let g = d3svg.Svg().select('g.data-group.nodes');
@@ -211,7 +143,9 @@ class D3Nodes {
         this.drawNodes_Add(g, nodes, simulator);
     }
     draw(d3svg, nodes, simulator, callback) {
-        simulator.nodes(nodes.list)
+        let node_list = (nodes && nodes.list) ? nodes.list : [];
+
+        simulator.nodes(node_list)
             .on("tick", () => {
                 this.ticked(d3svg, nodes);
             });

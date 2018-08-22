@@ -8,15 +8,17 @@ class D3Edges {
      * Draw
      * **************************************************************** */
     draw(d3svg, edges, simulator) {
+        let edges_list = (edges && edges.list) ? edges.list : [];
+
         simulator.force("link")
-            .links(edges.list)
+            .links(edges_list)
             .distance(function(){ return 222;})
             .strength(function(){ return 2; });
 
         d3svg.Svg()
             .select('g.edges')
             .selectAll('line.edge')
-            .data(edges.list, this._id)
+            .data(edges_list, this._id)
             .enter()
             .append('line')
             .attr('class', 'edge')
