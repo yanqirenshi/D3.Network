@@ -2,67 +2,22 @@
 
 # Usage
 
-example
+See `src/index.html`
 
-```js
-     this.d3svg = null;
-     this.simulator = new D3Simulator().make();
+# Installation
 
-     this.refreshSvgSize = () => {
-         let tag = this.refs.svg;
+# Dependencies
 
-         tag.setAttribute('width',window.innerWidth);
-         tag.setAttribute('height',window.innerHeight);
-     }
+- D3.js
 
-     this.makeD3Svg = () => {
-         return new D3Svg({
-             d3: d3,
-             svg: d3.select("page01-sec_root svg"),
-             x: 0,
-             y: 0,
-             w: window.innerWidth,
-             h: window.innerHeight,
-             scale: 1
-         });
-     };
+# Author
 
-     this.draw = () => {
-         // TODO: ここを解除する。
-         // return;
+yanqirenshi (yanqirenshie@gmail.com)
 
-         if (!this.refs.svg || !STORE.state().get('nodes') || !STORE.state().get('edges'))
-             return;
+# Copyright
 
-         let d3svg = this.d3svg;
+Copyright (c) 2018 yanqirenshi (yanqirenshie@gmail.com)
 
-         new D3Base().draw(d3svg)
-         new D3RuleLine().draw(d3svg, STORE.state().get('rules'));
-         new D3Nodes().draw(d3svg,
-                            STORE.state().get('nodes'),
-                            this.simulator,
-                            (type, data) => {
-                                if (type=='click-circle')
-                                    STORE.dispatch(ACTIONS.setDataToInspector(data));
-                            });
-         new D3Edges().draw(d3svg, STORE.state().get('edges'), this.simulator)
-     }
+# License
 
-     /* **************************************************************** *
-      *   Events
-      * **************************************************************** */
-     this.on('mount', () => {
-         this.refreshSvgSize();
-         this.d3svg = this.makeD3Svg();
-         this.draw();
-     });
-
-     this.on('update', () => {
-         this.refreshSvgSize();
-     });
-
-     STORE.subscribe((action) => {
-         if (action.type=='FETCHED-EDGES')
-             this.draw();
-     });
-```
+Licensed under the LLGPL License.
