@@ -10,15 +10,12 @@ class Main {
         tag.setAttribute('height',window.innerHeight);
     }
     draw (nodes, edges, rules) {
-        return;
-
         if (!this.d3svg)
             return;
 
         let d3svg = this.d3svg;
 
         new D3Base().draw(d3svg);
-        // new D3RuleLine().draw(d3svg, rules);
         new D3Nodes().draw(d3svg,
                            nodes,
                            this.simulator,
@@ -27,4 +24,49 @@ class Main {
     }
 }
 
-new Main(makeD3Svg()).draw([], [], null);
+function makeNode (id) {
+    return {
+        x: Math.floor(Math.random() * Math.floor(500)),
+        y: Math.floor(Math.random() * Math.floor(500)),
+        label: {
+            text: 'XYZ-'+id,
+            font: {
+                size: 12
+            }
+        },
+        circle: {
+            r: 33,
+            fill: '#eeeeee',
+            stroke: {
+                color: '#888888',
+                width: 1
+            }
+        },
+        _id: id,
+        _class: 'XXX'
+    };
+}
+function makeNodes (n) {
+    let nodes = [];
+    for (let i=1 ; i<n ; i++)
+        nodes.push(makeNode(i));
+    return nodes;
+}
+
+function makeEdge () {
+    return {
+        source: Math.floor(Math.random() * Math.floor(332)) + 1,
+        target: Math.floor(Math.random() * Math.floor(332)) + 1
+    };
+}
+function makeEdges (n) {
+    let edges = [];
+    for (let i=1 ; i<n ;i++)
+        edges.push(makeEdge());
+    return edges;
+}
+
+new Main(makeD3Svg())
+    .draw({list: makeNodes(333)},
+          {list: makeEdges(222)},
+          null);

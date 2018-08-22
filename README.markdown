@@ -10,11 +10,24 @@ See `src/index.html`
 
 ```
 {
-   x: 0,
-   y: 0,
-   label: '',
-   _id: 0,
-   _class: 'XXX'
+    x: 0,
+    y: 0,
+    label: {
+        text: 'XYZ',
+        font: {
+            size: 12
+        }
+    },
+    circle: {
+        r: 33,
+        fill: '#eeeeee',
+        stroke: {
+            color: '#888888',
+            width: 1
+        }
+    },
+    _id: 1,
+    _class: 'XXX'
 }
 ```
 
@@ -22,6 +35,9 @@ See `src/index.html`
 
 ```
 {
+
+   source: 1,
+   target: 2
 }
 ```
 
