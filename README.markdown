@@ -1,8 +1,29 @@
-# D3.NETWORK
+# D3.Network
 
 # Usage
 
 See `src/index.html`
+
+## Data Structure
+
+### Node
+
+```
+{
+   x: 0,
+   y: 0,
+   label: '',
+   _id: 0,
+   _class: 'XXX'
+}
+```
+
+### Edge
+
+```
+{
+}
+```
 
 # Installation
 
