@@ -35,7 +35,6 @@ See `src/index.html`
 
 ```
 {
-
    source: 1,
    target: 2
 }
