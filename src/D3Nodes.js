@@ -10,6 +10,10 @@ class D3Nodes {
      * **************************************************************** */
     nodeDrag_start(d, simulator) {
         if (!d3.event.active) simulator.alphaTarget(0.3).restart();
+
+        if (d.fx && d.fy)
+            d._fixed = true;
+
         d.fx = d.x;
         d.fy = d.y;
     }
@@ -19,8 +23,13 @@ class D3Nodes {
     }
     nodeDrag_end(d, simulator) {
         if (!d3.event.active) simulator.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
+
+        if (d._fixed) {
+            delete d._fixed;
+        } else {
+            d.fx = null;
+            d.fy = null;
+        }
     }
     /* ****************************************************************
      * Tick
@@ -82,12 +91,13 @@ class D3Nodes {
      * **************************************************************** */
     drawNodes_Remove (g, nodes) {
         g.selectAll('g.node')
-            .exit(nodes.list, this._id)
+            .data(nodes.list, (d) => { return d._id; })
+            .exit()
             .remove();
     }
     drawNodes_Add (g, nodes, simulator) {
         let new_nodes = g.selectAll('g.node')
-            .data(nodes.list, this._id)
+            .data(nodes.list, (d) => { return d._id; })
             .enter();
 
         let g_list = new_nodes
@@ -106,15 +116,18 @@ class D3Nodes {
             .call(d3.drag()
                   .on("start", (d) => {
                       this.nodeDrag_start(d, simulator);
+                      this._callback(d, d3.event, 'drag-start');
                   })
                   .on("drag", (d) => {
                       this.nodeDrag_dragged(d);
+                      this._callback(d, d3.event, 'drag');
                   })
                   .on("end", (d) => {
                       this.nodeDrag_end(d, simulator);
+                      this._callback(d, d3.event, 'drag-end');
                   }))
             .on('click', (d) => {
-                this._callback('click-circle', d);
+                this._callback(d, d3.event, 'click-circle');
             });
 
 
@@ -122,10 +135,12 @@ class D3Nodes {
             .attr('class', 'circle-label')
             .attr('fill', 'black')
             .attr('stroke', 'black')
-            .attr('font-size', (d) => { return d.label.font.size; })
+            .attr('font-size', (d) => {
+                return d.label.font.size;
+            })
             .text((d) => { return d.label.text; })
             .on('click', (d) => {
-                this._callback('click-circle', d);
+                this._callback(d3.event, 'click-circle', d);
             });
 
         // g_list.append('text')
