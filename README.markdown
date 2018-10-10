@@ -6,7 +6,20 @@ See `src/index.html`
 
 ## Data Structure
 
+データを以下のフォーマットに変換して流し込む必要があります。
+
 ### Node
+
+#### Envelope
+
+```
+{
+  ht: { /* key: _id, value: Object */ },
+  list: [ /* Object ... */ ]
+}
+```
+
+#### Object
 
 ```
 {
@@ -28,15 +41,28 @@ See `src/index.html`
     },
     _id: 1,
     _class: 'XXX'
+    _core: { /* 元となるデータ */ }
 }
 ```
 
 ### Edge
 
+#### Envelope
+
+```
+{
+  ht: { /* key: _id, value: Object */ },
+  list: [ /* Object ... */ ]
+}
+```
+
+#### Object
+
 ```
 {
    source: 1,
    target: 2
+    _core: { /* 元となるデータ */ }
 }
 ```
 
