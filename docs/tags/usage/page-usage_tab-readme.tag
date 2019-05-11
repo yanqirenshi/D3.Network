@@ -1,4 +1,5 @@
-<page_use-tabs_tab_readme>
+<page-usage_tab-readme>
+
     <section class="section">
         <div class="container">
             <h1 class="title">README</h1>
@@ -8,4 +9,5 @@
             </div>
         </div>
     </section>
-</page_use-tabs_tab_readme>
+
+</page-usage_tab-readme>

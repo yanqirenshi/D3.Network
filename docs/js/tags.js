@@ -29,6 +29,41 @@ riot.tag2('app', '<menu-bar brand="{{label:\'RT\'}}" site="{site()}" moves="{[]}
          location.hash=STORE.get('site.active_page');
 });
 
+riot.tag2('page-classes', '<section-header title="Data"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page-classes_tab-readme class="hide"></page-classes_tab-readme> <page-classes_tab-d3nodes class="hide"></page-classes_tab-d3nodes> <page-classes_tab-d3edges class="hide"></page-classes_tab-d3edges> <page-classes_tab-d3simulator class="hide"></page-classes_tab-d3simulator> <page-classes_tab-d3base class="hide"></page-classes_tab-d3base> </div>', '', '', function(opts) {
+     this.page_tabs = new PageTabs([
+         {code: 'readme',      label: 'Overview',    tag: 'page-classes_tab-readme' },
+         {code: 'd3nodes',     label: 'D3Nodes',     tag: 'page-classes_tab-d3nodes' },
+         {code: 'd3edges',     label: 'D3Edges',     tag: 'page-classes_tab-d3edges' },
+         {code: 'd3simulator', label: 'D3Simulator', tag: 'page-classes_tab-d3simulator' },
+         {code: 'd3base',      label: 'D3Base',      tag: 'page-classes_tab-d3base' },
+     ]);
+
+     this.on('mount', () => {
+         this.page_tabs.switchTab(this.tags)
+         this.update();
+     });
+
+     this.clickTab = (e, action, data) => {
+         if (this.page_tabs.switchTab(this.tags, data.code))
+             this.update();
+     };
+});
+
+riot.tag2('page-classes_tab-d3base', '<section class="section"> <div class="container"> <h1 class="title">D3Base</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('page-classes_tab-d3edges', '<section class="section"> <div class="container"> <h1 class="title">D3Edges</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('page-classes_tab-d3nodes', '<section class="section"> <div class="container"> <h1 class="title">D3Nodes</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('page-classes_tab-d3simulator', '<section class="section"> <div class="container"> <h1 class="title">D3Simulator</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('page-classes_tab-readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
 riot.tag2('markdown-preview', '', 'markdown-preview h1 { font-weight: bold; font-size: 20px; margin-top: 11px; margin-bottom: 6px; } markdown-preview h2 { font-weight: bold; font-size: 18px; margin-top: 8px; margin-bottom: 4px; } markdown-preview h3 { font-weight: bold; font-size: 16px; margin-top: 6px; margin-bottom: 3px; } markdown-preview h4 { font-weight: bold; font-size: 14px; margin-top: 6px; margin-bottom: 3px; } markdown-preview h5 { font-weight: bold; font-size: 12px; margin-bottom: 4px; } markdown-preview * { font-size: 12px; } markdown-preview table { border-collapse: collapse; } markdown-preview td { border: solid 0.6px #888888; padding: 2px 5px; } markdown-preview th { border: solid 0.6px #888888; padding: 2px 5px; background: #eeeeee; }', '', function(opts) {
      this.on('update', () => {
          this.root.innerHTML = this.opts.data;
@@ -38,7 +73,7 @@ riot.tag2('markdown-preview', '', 'markdown-preview h1 { font-weight: bold; font
 
 });
 
-riot.tag2('menu-bar', '<aside class="menu"> <p ref="brand" class="menu-label" onclick="{clickBrand}"> {opts.brand.label} </p> <ul class="menu-list"> <li each="{opts.site.pages}"> <a class="{opts.site.active_page==code ? \'is-active\' : \'\'}" href="{\'#\' + code}"> {menu_label} </a> </li> </ul> </aside> <div class="move-page-menu hide" ref="move-panel"> <p each="{moves()}"> <a href="{href}">{label}</a> </p> </div>', 'menu-bar .move-page-menu { z-index: 666665; background: #ffffff; position: fixed; left: 55px; top: 0px; min-width: 111px; height: 100vh; box-shadow: 2px 0px 8px 0px #e0e0e0; padding: 22px 55px 22px 22px; } menu-bar .move-page-menu.hide { display: none; } menu-bar .move-page-menu > p { margin-bottom: 11px; } menu-bar > .menu { z-index: 666666; height: 100vh; width: 55px; padding: 11px 0px 11px 11px; position: fixed; left: 0px; top: 0px; background: #e198b4; } menu-bar .menu-label, menu-bar .menu-list a { padding: 0; width: 33px; height: 33px; text-align: center; margin-top: 8px; border-radius: 3px; background: none; color: #ffffff; font-weight: bold; padding-top: 7px; font-size: 14px; } menu-bar .menu-label,[data-is="menu-bar"] .menu-label{ background: #ffffff; color: #e198b4; } menu-bar .menu-label.open,[data-is="menu-bar"] .menu-label.open{ background: #ffffff; color: #e198b4; width: 44px; border-radius: 3px 0px 0px 3px; text-shadow: 0px 0px 1px #eee; padding-right: 11px; } menu-bar .menu-list a.is-active { width: 44px; padding-right: 11px; border-radius: 3px 0px 0px 3px; background: #ffffff; color: #333333; }', '', function(opts) {
+riot.tag2('menu-bar', '<aside class="menu"> <p ref="brand" class="menu-label" onclick="{clickBrand}"> {opts.brand.label} </p> <ul class="menu-list"> <li each="{opts.site.pages}"> <a class="{opts.site.active_page==code ? \'is-active\' : \'\'}" href="{\'#\' + code}"> {menu_label} </a> </li> </ul> </aside> <div class="move-page-menu hide" ref="move-panel"> <p each="{moves()}"> <a href="{href}">{label}</a> </p> </div>', 'menu-bar .move-page-menu { z-index: 666665; background: #ffffff; position: fixed; left: 55px; top: 0px; min-width: 111px; height: 100vh; box-shadow: 2px 0px 8px 0px #e0e0e0; padding: 22px 55px 22px 22px; } menu-bar .move-page-menu.hide { display: none; } menu-bar .move-page-menu > p { margin-bottom: 11px; } menu-bar > .menu { z-index: 666666; height: 100vh; width: 55px; padding: 11px 0px 11px 11px; position: fixed; left: 0px; top: 0px; background: #eaedf7; } menu-bar .menu-label, menu-bar .menu-list a { padding: 0; width: 33px; height: 33px; text-align: center; margin-top: 8px; border-radius: 3px; background: none; color: #333333; font-weight: bold; padding-top: 7px; font-size: 14px; } menu-bar .menu-label,[data-is="menu-bar"] .menu-label{ background: #ffffff; color: #333333; } menu-bar .menu-label.open,[data-is="menu-bar"] .menu-label.open{ background: #ffffff; color: #333333; width: 44px; border-radius: 3px 0px 0px 3px; text-shadow: 0px 0px 1px #eee; padding-right: 11px; } menu-bar .menu-list a.is-active { width: 44px; padding-right: 11px; border-radius: 3px 0px 0px 3px; background: #ffffff; color: #333333; }', '', function(opts) {
      this.moves = () => {
          let moves = [
              { code: 'link-a', href: '', label: 'Link A' },
@@ -187,44 +222,53 @@ riot.tag2('section-list', '<table class="table is-bordered is-striped is-narrow 
      };
 });
 
+riot.tag2('cdn-versions', '<table class="table is-bordered is-striped is-narrow is-hoverable"> <thead> <th>Version</th> <th>File</th> <th>Url</th> </thead> <tbody> <tr each="{cdn in CDNs()}"> <td each="{col in cdn}" rowspan="{col.span.row}"> <div if="{col.url}"><a href="{col.url}">{col.name}</a></div> <span if="{!col.url}">{col.name}</span> </td> </tr> </tbody> </table>', '', '', function(opts) {
+     this.CDNs = () => {
+         let out = [];
+
+         for (let cdn of this.opts.sources)
+             for (let i in cdn.files) {
+                 let rec = [];
+
+                 if (i==0)
+                     rec.push({
+                         name: cdn.version,
+                         url: null,
+                         span: {
+                             row: cdn.files.length
+                         }
+                     })
+
+                 let file = cdn.files[i];
+                 rec.push({
+                     name: file.name,
+                     url: null,
+                     span: { row: 1 },
+                 });
+
+                 rec.push({
+                     name: file.url,
+                     url: file.url,
+                     span: { row: 1 },
+                 });
+
+                 out.push(rec);
+             }
+
+         return out;
+     };
+});
+
 riot.tag2('sections-list', '<table class="table"> <tbody> <tr each="{opts.data}"> <td><a href="{hash}">{code}</a></td> <td>{tag}</td> </tr> </tbody> </table>', '', '', function(opts) {
 });
 
-riot.tag2('page_have-childs', '<section-header title="Page01"></section-header> <section-container title="セクション" data="{sections()}"> <sections-list data="{opts.data}"> </sections-list> </section-container>', '', '', function(opts) {
-     this.sections = () => {
-         let pages = STORE.get('site').pages;
-         let page = pages.find((d) => { return d.code=='have-child'; });
-
-         return page.children;
-     }
-});
-
-riot.tag2('page_have-childs_page1', '<section-header-with-breadcrumb title="Child 1"></section-header-with-breadcrumb>', '', '', function(opts) {
-});
-
-riot.tag2('page_have-childs_page2', '<section-header-with-breadcrumb title="Child 2"></section-header-with-breadcrumb>', '', '', function(opts) {
-});
-
-riot.tag2('page_have-childs_page3', '<section-header-with-breadcrumb title="Child 3"></section-header-with-breadcrumb>', '', '', function(opts) {
-});
-
-riot.tag2('home_page', '<section-header title="HOME"></section-header> <section class="section"> <div class="container"> <h1 class="title">CDN</h1> <h2 class="subtitle"></h2> <div class="contents"> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Network.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Base.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Edges.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Nodes.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Ruler.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Simulator.js</p> <p></p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Network.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Base.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Edges.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Nodes.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Ruler.js</p> <p>https://yanqirenshi.github.io/D3.Network/dist/edge/D3Simulator.js</p> </div> </div> </section>', '', '', function(opts) {
-});
-
-riot.tag2('page_member', '<section-header title="Member"></section-header>', '', '', function(opts) {
-     dump(this.opts._route)
-});
-
-riot.tag2('page_teams', '<section-header title="Teams"></section-header>', '', '', function(opts) {
-});
-
-riot.tag2('page_use-tabs', '<section-header title="Page02"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page_use-tabs_tab_readme class="hide"></page_use-tabs_tab_readme> <page_use-tabs_tab_tab1 class="hide"></page_use-tabs_tab_tab1> <page_use-tabs_tab_tab2 class="hide"></page_use-tabs_tab_tab2> <page_use-tabs_tab_tab3 class="hide"></page_use-tabs_tab_tab3> <page_use-tabs_tab_help class="hide"></page_use-tabs_tab_help> </div>', '', '', function(opts) {
+riot.tag2('page-data', '<section-header title="Data"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page-data_tab-readme class="hide"></page-data_tab-readme> <page-data_tab-node-envelope class="hide"></page-data_tab-node-envelope> <page-data_tab-node-object class="hide"></page-data_tab-node-object> <page-data_tab-edge-envelope class="hide"></page-data_tab-edge-envelope> <page-data_tab-edge-object class="hide"></page-data_tab-edge-object> </div>', '', '', function(opts) {
      this.page_tabs = new PageTabs([
-         {code: 'readme', label: 'README', tag: 'page_use-tabs_tab_readme' },
-         {code: 'tab1',   label: 'TAB1',   tag: 'page_use-tabs_tab_tab1' },
-         {code: 'tab2',   label: 'TAB2',   tag: 'page_use-tabs_tab_tab2' },
-         {code: 'tab3',   label: 'TAB3',   tag: 'page_use-tabs_tab_tab3' },
-         {code: 'help',   label: 'HELP',   tag: 'page_use-tabs_tab_help' },
+         {code: 'readme',        label: 'README',        tag: 'page-data_tab-readme' },
+         {code: 'node-envelope', label: 'Node Envelope', tag: 'page-data_tab-node-envelope' },
+         {code: 'node-object',   label: 'Node Object',   tag: 'page-data_tab-node-object' },
+         {code: 'edge-envelope', label: 'Edge Envelope', tag: 'page-data_tab-edge-envelope' },
+         {code: 'edge-object',   label: 'Edge Object',   tag: 'page-data_tab-edge-object' },
      ]);
 
      this.on('mount', () => {
@@ -238,17 +282,70 @@ riot.tag2('page_use-tabs', '<section-header title="Page02"></section-header> <di
      };
 });
 
-riot.tag2('page_use-tabs_tab_help', '<section class="section"> <div class="container"> <h1 class="title">HELP</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-data_tab-edge-envelope', '<section class="section"> <div class="container"> <div class="contents"> <div class="contents"> <p><pre>\\{\n  ht: \\{ /* key: _id, value: Object */ \\},\n  list: [ /* Object ... */ ]\n\\}</pre></p> </div> </div> </div> </section>', '', '', function(opts) {
 });
 
-riot.tag2('page_use-tabs_tab_readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-data_tab-node-envelope', '<section class="section"> <div class="container"> <div class="contents"> <p><pre>\\{\n  ht: \\{ /* key: _id, value: Object */ \\},\n  list: [ /* Object ... */ ]\n\\}</pre></p> </div> </div> </section>', '', '', function(opts) {
 });
 
-riot.tag2('page_use-tabs_tab_tab1', '<section class="section"> <div class="container"> <h1 class="title">TAB1</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-data_tab-node-object', '<section class="section"> <div class="container"> <div class="contents"> <p><pre>\\{\n    x: 0,\n    y: 0,\n    label: \\{\n        text: \'XYZ\',\n        font: \\{\n            size: 12\n        \\}\n    \\},\n    circle: \\{\n        r: 33,\n        fill: \'#eeeeee\',\n        stroke: \\{\n            color: \'#888888\',\n            width: 1\n        \\}\n    \\},\n    _id: 1,\n    _class: \'XXX\'\n    _core: \\{ /* 元となるデータ */ \\}\n\\}</pre></p> </div> </div> </section>', '', '', function(opts) {
 });
 
-riot.tag2('page_use-tabs_tab_tab2', '<section class="section"> <div class="container"> <h1 class="title">TAB2</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-data_tab-edge-object', '<section class="section"> <div class="container"> <div class="contents"> <p><pre>\\{\n   source: 1,\n   target: 2\n    _core: \\{ /* 元となるデータ */ \\}\n\\}</pre></p> </div> </div> </section>', '', '', function(opts) {
 });
 
-riot.tag2('page_use-tabs_tab_tab3', '<section class="section"> <div class="container"> <h1 class="title">TAB3</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-data_tab-readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+});
+
+riot.tag2('home_page', '<section-header title="HOME"></section-header> <section class="section"> <div class="container"> <h1 class="title">CDN</h1> <h2 class="subtitle"></h2> <div class="contents"> <cdn-versions sources="{cdns}"></cdn-versions> </div> </div> </section>', '', '', function(opts) {
+     this.cdns = [
+         {
+             version: 'Version 0.0.1',
+             files: [
+                 { name: 'D3Network.js',   url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Network.js' },
+                 { name: 'D3Base.js',      url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Base.js' },
+                 { name: 'D3Edges.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Edges.js' },
+                 { name: 'D3Nodes.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Nodes.js' },
+                 { name: 'D3Ruler.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Ruler.js' },
+                 { name: 'D3Simulator.js', url: 'https://yanqirenshi.github.io/D3.Network/dist/0.0.1/D3Simulator.js' },
+             ]
+         },
+         {
+             version: 'Edge Version',
+             files: [
+                 { name: 'D3Network.js',   url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Network.js' },
+                 { name: 'D3Base.js',      url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Base.js' },
+                 { name: 'D3Edges.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Edges.js' },
+                 { name: 'D3Nodes.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Nodes.js' },
+                 { name: 'D3Ruler.js',     url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Ruler.js' },
+                 { name: 'D3Simulator.js', url: 'https://yanqirenshi.github.io/D3.Network/dist/edge/D3Simulator.js' },
+             ]
+         },
+     ]
+});
+
+riot.tag2('page_member', '<section-header title="Member"></section-header>', '', '', function(opts) {
+     dump(this.opts._route)
+});
+
+riot.tag2('page_teams', '<section-header title="Teams"></section-header>', '', '', function(opts) {
+});
+
+riot.tag2('page-usage', '<section-header title="Data"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page-usage_tab-readme class="hide"></page-usage_tab-readme> </div>', '', '', function(opts) {
+     this.page_tabs = new PageTabs([
+         {code: 'readme',        label: 'README',        tag: 'page-usage_tab-readme' },
+     ]);
+
+     this.on('mount', () => {
+         this.page_tabs.switchTab(this.tags)
+         this.update();
+     });
+
+     this.clickTab = (e, action, data) => {
+         if (this.page_tabs.switchTab(this.tags, data.code))
+             this.update();
+     };
+});
+
+riot.tag2('page-usage_tab-readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
 });

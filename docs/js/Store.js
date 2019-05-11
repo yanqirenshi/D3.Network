@@ -10,46 +10,19 @@ class Store extends Vanilla_Redux_Store {
                 tag: 'home_page',
             },
             {
-                code: "use-tabs",
-                menu_label: 'タブ',
-                tag: 'page_use-tabs',
+                code: "usage",
+                menu_label: 'Usage',
+                tag: 'page-usage',
             },
             {
-                code: "have-child",
-                menu_label: '子供',
-                tag: 'page_have-childs',
-                children: [
-                    {
-                        code: "child01",
-                        tag: 'page_have-childs_page1',
-                    },
-                    {
-                        code: "child02",
-                        tag: 'page_have-childs_page2',
-                    },
-                    {
-                        code: "child03",
-                        tag: 'page_have-childs_page3',
-                    },
-                ],
+                code: "data",
+                menu_label: 'Data',
+                tag: 'page-data',
             },
             {
-                code: "teams",
-                menu_label: '集',
-                tag: 'page_teams',
-                children: [
-                    {
-                        code: "members",
-                        children: [
-                            {
-                                code: "user-id",
-                                regex: /^\d+$/,
-                                // TODO: regex: { contents: /^\d+$/, type: 'integer' },
-                                tag: 'page_member',
-                            },
-                        ],
-                    },
-                ],
+                code: "classes",
+                menu_label: 'Class',
+                tag: 'page-classes',
             },
         ];
     }
