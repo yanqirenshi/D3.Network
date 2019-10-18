@@ -24,8 +24,18 @@ class D3Edges {
             .enter()
             .append('line')
             .attr('class', 'edge')
-            .attr('stroke', '#888888')
-            .attr('stroke-width', 0.8);
+            .attr('stroke', (d) => {
+                if (!d.stroke || !d.stroke.color)
+                    return '#888888';
+
+                return d.stroke.color;
+            })
+            .attr('stroke-width', (d) => {
+                if (!d.stroke || !d.stroke.w)
+                    return 0.8;
+
+                return d.stroke.w;
+            });
     }
     draw(d3svg, edges, simulator) {
         let edges_list = (edges && edges.list) ? edges.list : [];
