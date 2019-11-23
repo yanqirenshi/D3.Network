@@ -37,7 +37,7 @@ var Metronome = new Vanilla_metronome({
 /*  Router  */
 /* ****** */
 var ROUTER = new VanillaRouterRiot(
-    STORE.get('site.pages'),
+    STORE.get('site'),
     {
         callbacks: {
             changed: (route) => {

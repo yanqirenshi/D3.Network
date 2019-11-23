@@ -1,29 +1,3 @@
-class Main {
-    constructor (d3svg) {
-        this.d3svg = d3svg;
-        this.simulator = new D3Simulator().make();
-    }
-    refreshSvgSize () {
-        let tag = this.refs.svg;
-
-        tag.setAttribute('width',window.innerWidth);
-        tag.setAttribute('height',window.innerHeight);
-    }
-    draw (nodes, edges, rules) {
-        if (!this.d3svg)
-            return;
-
-        let d3svg = this.d3svg;
-
-        new D3Base().draw(d3svg);
-        new D3Nodes().draw(d3svg,
-                           nodes,
-                           this.simulator,
-                           (type, data) => { return; });
-        new D3Edges().draw(d3svg, edges, this.simulator);
-    }
-}
-
 function makeNode (id) {
     return {
         x: Math.floor(Math.random() * Math.floor(500)),
@@ -66,7 +40,35 @@ function makeEdges (n) {
     return edges;
 }
 
+class Main {
+    constructor (d3svg) {
+        this.d3svg = d3svg;
+        this.simulator = new D3Simulator().make();
+    }
+    refreshSvgSize () {
+        let tag = this.refs.svg;
+
+        tag.setAttribute('width',window.innerWidth);
+        tag.setAttribute('height',window.innerHeight);
+    }
+    draw (nodes, edges, rules) {
+        if (!this.d3svg)
+            return;
+
+        let d3svg = this.d3svg;
+
+        new D3Base().draw(d3svg);
+        new D3Nodes().draw(d3svg,
+                           nodes,
+                           this.simulator,
+                           (type, data) => { return; });
+        new D3Edges().draw(d3svg, edges, this.simulator);
+    }
+}
+
 new Main(makeD3Svg())
-    .draw({list: makeNodes(333)},
-          {list: makeEdges(222)},
-          null);
+    .draw(
+        {list: makeNodes(333)},
+        {list: makeEdges(222)},
+        null
+    );

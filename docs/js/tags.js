@@ -1,7 +1,13 @@
 riot.tag2('app-page-area', '', '', '', function(opts) {
-     this.on('update', (action) => {
+     this.draw = () => {
          if (this.opts.route)
              ROUTER.draw(this, STORE.get('site.pages'), this.opts.route);
+     }
+     this.on('mount', () => {
+         this.draw();
+     });
+     this.on('update', () => {
+         this.draw();
      });
 });
 
@@ -297,7 +303,7 @@ riot.tag2('page-data_tab-edge-object', '<section class="section"> <div class="co
 riot.tag2('page-data_tab-readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
 });
 
-riot.tag2('home_page', '<section-header title="HOME"></section-header> <section class="section"> <div class="container"> <h1 class="title">CDN</h1> <h2 class="subtitle"></h2> <div class="contents"> <cdn-versions sources="{cdns}"></cdn-versions> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('home_page-cdn', '<section class="section"> <div class="container"> <h1 class="title">CDN</h1> <h2 class="subtitle"></h2> <div class="contents"> <cdn-versions sources="{cdns}"></cdn-versions> </div> </div> </section>', '', '', function(opts) {
      this.cdns = [
          {
              version: 'Version 0.0.1',
@@ -324,6 +330,9 @@ riot.tag2('home_page', '<section-header title="HOME"></section-header> <section 
      ]
 });
 
+riot.tag2('home_page', '<section-header title="HOME"></section-header> <home_page-cdn></home_page-cdn>', '', '', function(opts) {
+});
+
 riot.tag2('page_member', '<section-header title="Member"></section-header>', '', '', function(opts) {
      dump(this.opts._route)
 });
@@ -331,9 +340,12 @@ riot.tag2('page_member', '<section-header title="Member"></section-header>', '',
 riot.tag2('page_teams', '<section-header title="Teams"></section-header>', '', '', function(opts) {
 });
 
-riot.tag2('page-usage', '<section-header title="Data"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page-usage_tab-readme class="hide"></page-usage_tab-readme> </div>', '', '', function(opts) {
+riot.tag2('page-usage', '<section-header title="Usage"></section-header> <div style="padding-left:55px;"> <page-tabs core="{page_tabs}" callback="{clickTab}"></page-tabs> </div> <div> <page-usage_tab-readme_tab-graph></page-usage_tab-readme_tab-graph> <page-usage_tab-readme_tab-code-html></page-usage_tab-readme_tab-code-html> <page-usage_tab-readme_tab-code-js></page-usage_tab-readme_tab-code-js> <page-usage_tab-readme_tab-code-data></page-usage_tab-readme_tab-code-data> </div>', '', '', function(opts) {
      this.page_tabs = new PageTabs([
-         {code: 'readme',        label: 'README',        tag: 'page-usage_tab-readme' },
+         {code: 'graph', label: 'Readme',          tag: 'page-usage_tab-readme_tab-graph' },
+         {code: 'html',  label: 'Code:Html',       tag: 'page-usage_tab-readme_tab-code-html' },
+         {code: 'js',    label: 'Code:Javascript', tag: 'page-usage_tab-readme_tab-code-js' },
+         {code: 'data',  label: 'Code:Data',       tag: 'page-usage_tab-readme_tab-code-data' },
      ]);
 
      this.on('mount', () => {
@@ -347,5 +359,112 @@ riot.tag2('page-usage', '<section-header title="Data"></section-header> <div sty
      };
 });
 
-riot.tag2('page-usage_tab-readme', '<section class="section"> <div class="container"> <h1 class="title">README</h1> <h2 class="subtitle"> </h2> <div class="contents"> </div> </div> </section>', '', '', function(opts) {
+riot.tag2('page-usage_tab-readme_tab-code-data', '<section class="section"> <div class="container"> <h1 class="title is-4">Data</h1> <h2 class="subtitle"></h2> <div class="contents"> <p><pre style="line-height:14px;"><code>{this.code}</code></pre></p> </div> </div> </section>', '', '', function(opts) {
+     this.on('mount', () => {
+         hljs.initHighlightingOnLoad();
+     });
+     this.code = [
+         "function makeNode (id) {",
+         "    return {",
+         "        x: Math.floor(Math.random() * Math.floor(500)),",
+         "        y: Math.floor(Math.random() * Math.floor(500)),",
+         "        label: {",
+         "            text: 'XYZ-'+id,",
+         "            font: {",
+         "                size: 12",
+         "            }",
+         "        },",
+         "        circle: {",
+         "            r: 33,",
+         "            fill: '#eeeeee',",
+         "            stroke: {",
+         "                color: '#888888',",
+         "                width: 1",
+         "            }",
+         "        },",
+         "        _id: id,",
+         "        _class: 'XXX'",
+         "    };",
+         "}",
+         "function makeNodes (n) {",
+         "    let nodes = [];",
+         "    for (let i=1 ; i<n ; i++)",
+         "        nodes.push(makeNode(i));",
+         "    return nodes;",
+         "}",
+         "",
+         "function makeEdge () {",
+         "    return {",
+         "        source: Math.floor(Math.random() * Math.floor(332)), 1,",
+         "        target: Math.floor(Math.random() * Math.floor(332)), 1",
+         "    };",
+         "}",
+         "function makeEdges (n) {",
+         "    let edges = [];",
+         "    for (let i=1 ; i<n ;i++)",
+         "        edges.push(makeEdge());",
+         "    return edges;",
+         "}"
+     ].join('\n');
+});
+
+riot.tag2('page-usage_tab-readme_tab-code-html', '<section class="section"> <div class="container"> <h1 class="title is-4">Html</h1> <h2 class="subtitle"></h2> <div class="contents"> <p><pre style="line-height:14px;"><code>{code}</code></pre></p> </div> </div> </section>', '', '', function(opts) {
+     this.on('mount', () => {
+         hljs.initHighlightingOnLoad();
+     });
+     this.code = [
+         '&lt;head&gt;',
+         '    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"&gt;&lt;/script&gt;',
+         '',
+         '    &lt;script src="https://yanqirenshi.github.io/D3.Svg/dist/beta/D3.Svg.js"&gt;&lt;/script&gt;',
+         '    &lt;script src="./sketch.js"&gt;&lt;/script&gt;',
+         '    &lt;script src="D3Network.js"&gt;&lt;/script&gt;',
+         '&lt;/head&gt;',
+         '&lt;body&gt;',
+         '    &lt;svg id="scketchbook"&gt;&lt;/svg&gt;',
+         '&lt;/body&gt;',
+     ].join('\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+});
+
+riot.tag2('page-usage_tab-readme_tab-code-js', '<section class="section"> <div class="container"> <h1 class="title is-4">Javascript</h1> <h2 class="subtitle"></h2> <div class="contents"> <p><pre style="line-height:14px;"><code>{code}</code></pre></p> </div> </div> </section>', '', '', function(opts) {
+     this.on('mount', () => {
+         hljs.initHighlightingOnLoad();
+     });
+     this.code = [
+         "class Main {",
+         "    constructor (d3svg) {",
+         "        this.d3svg = d3svg;",
+         "        this.simulator = new D3Simulator().make();",
+         "    }",
+         "    refreshSvgSize () {",
+         "        let tag = this.refs.svg;",
+         "",
+         "        tag.setAttribute('width',window.innerWidth);",
+         "        tag.setAttribute('height',window.innerHeight);",
+         "    }",
+         "    draw (nodes, edges, rules) {",
+         "        if (!this.d3svg)",
+         "            return;",
+         "",
+         "        let d3svg = this.d3svg;",
+         "",
+         "        new D3Base().draw(d3svg);",
+         "        new D3Nodes().draw(d3svg,",
+         "                           nodes,",
+         "                           this.simulator,",
+         "                           (type, data) => { return; });",
+         "        new D3Edges().draw(d3svg, edges, this.simulator);",
+         "    }",
+         "}",
+         "",
+         "new Main(makeD3Svg())",
+         "    .draw(",
+         "        {list: makeNodes(333)},",
+         "        {list: makeEdges(222)},",
+         "        null",
+         "    );",
+     ].join('\n');
+});
+
+riot.tag2('page-usage_tab-readme_tab-graph', '', '', '', function(opts) {
 });
