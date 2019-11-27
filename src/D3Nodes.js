@@ -106,33 +106,33 @@ class D3Nodes {
                 return 'node ' + d._class;
             });
 
-        let circles = g_list.append('circle')
-            .attr('cx', 100)
-            .attr('cy', 90)
-            .attr('r', (d) => { return d.circle.r; })
-            .attr('fill', (d) => { return d.circle.fill; })
-            .attr('stroke', (d) => { return d.circle.stroke.color; })
-            .attr('stroke-width', (d) => { return d.circle.stroke.width; })
-            .call(d3.drag()
-                  .on("start", (d) => {
-                      this.nodeDrag_start(d, simulator);
-                      this._callback(d, d3.event, 'drag-start');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("drag", (d) => {
-                      this.nodeDrag_dragged(d);
-                      this._callback(d, d3.event, 'drag');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("end", (d) => {
-                      this.nodeDrag_end(d, simulator);
-                      this._callback(d, d3.event, 'drag-end');
-                      d3.event.sourceEvent.stopPropagation();
-                  }))
-            .on('click', (d) => {
-                this._callback(d, d3.event, 'click-circle');
-                d3.event.stopPropagation();
-            });
+        // let circles = g_list.append('circle')
+        //     .attr('cx', 100)
+        //     .attr('cy', 90)
+        //     .attr('r', (d) => { return d.circle.r; })
+        //     .attr('fill', (d) => { return d.circle.fill; })
+        //     .attr('stroke', (d) => { return d.circle.stroke.color; })
+        //     .attr('stroke-width', (d) => { return d.circle.stroke.width; })
+        //     .call(d3.drag()
+        //           .on("start", (d) => {
+        //               this.nodeDrag_start(d, simulator);
+        //               this._callback(d, d3.event, 'drag-start');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("drag", (d) => {
+        //               this.nodeDrag_dragged(d);
+        //               this._callback(d, d3.event, 'drag');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("end", (d) => {
+        //               this.nodeDrag_end(d, simulator);
+        //               this._callback(d, d3.event, 'drag-end');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           }))
+        //     .on('click', (d) => {
+        //         this._callback(d, d3.event, 'click-circle');
+        //         d3.event.stopPropagation();
+        //     });
 
 
         g_list.append('text')
