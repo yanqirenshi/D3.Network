@@ -1,5 +1,7 @@
 class D3Edges {
-    constructor(reducer) {}
+    constructor(reducer) {
+        let last_draw_time = null;
+    }
     /* ****************************************************************
      * Utility
      * **************************************************************** */
@@ -24,20 +26,28 @@ class D3Edges {
             .enter()
             .append('line')
             .attr('class', 'edge')
-            .attr('stroke', (d) => {
-                if (!d.stroke || !d.stroke.color)
-                    return '#888888';
-
-                return d.stroke.color;
-            })
-            .attr('stroke-width', (d) => {
-                if (!d.stroke || !d.stroke.w)
-                    return 0.8;
-
-                return d.stroke.w;
-            });
+            .attr('stroke', '#888888')
+            .attr('stroke-width', 0.8)
+            .attr('marker-end', "url(#arrowhead)");
+    }
+    initMarker (d3svg) {
+        let svg = d3svg.Svg();
+        svg
+            .append("defs")
+            .append("marker")
+            .attr('id', "arrowhead")
+            .attr('refX', 0)
+            .attr('refY', 2)
+            .attr('markerWidth', 4)
+            .attr('markerHeight', 4)
+            .attr('orient', "auto")
+            .attr( 'd', "M 0,0 V 4 L4,2 Z")
+            .attr( 'fill', "steelblue");
     }
     draw(d3svg, edges, simulator) {
+        if (!this.last_draw_time)
+            this.initMarker(d3svg);
+
         let edges_list = (edges && edges.list) ? edges.list : [];
 
         simulator.force("link")
@@ -47,5 +57,7 @@ class D3Edges {
 
         this.drawEdge_Remove(d3svg, edges_list);
         this.drawEdge_Add(d3svg, edges_list);
+
+        this.last_draw_time = new Date();
     }
 }
