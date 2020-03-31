@@ -36,9 +36,37 @@ class D3Nodes {
      * **************************************************************** */
     tickedNodes(g) {
         g.selectAll('g.node')
-            .attr("transform", function(d) {
-                return 'translate(' + d.x + ',' + d.y + ')';
+            .selectAll('circle')
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; });
+
+        g.selectAll('g.node')
+            .selectAll('text.circle-label')
+            .attr("x", function(d) {
+                let cls = d._class;
+
+                if (cls=='ALGORITHM') return d.x - 16;
+                if (cls=='BOOK')      return d.x - 12;
+                if (cls=='ARXIV')     return d.x - 10;
+
+                return d.x - 12;
+            })
+            .attr("y", function(d) {
+                let cls = d._class;
+
+                if (cls=='ALGORITHM') return d.y + 12;
+                if (cls=='BOOK')      return d.y + 4;
+                if (cls=='ARXIV')     return d.y + 4;
+
+                return d.y + 4;
             });
+
+        g.selectAll('g.node')
+            .selectAll('text.node-label')
+            .attr("x", function(d) {
+                return d.x + 33;
+            })
+            .attr("y", function(d) { return d.y + 4; });
     }
     tickedEdges(g) {
         g.selectAll('line.edge')
@@ -76,74 +104,57 @@ class D3Nodes {
             .append('g')
             .attr('class', (d) => {
                 return 'node ' + d._class;
-            })
-            .attr('transform', (d) => {
-                return 'translate(' + d.x + ',' + d.y + ')';
             });
 
-        let circles = g_list.append('circle')
-            .attr('r', (d) => { return d.circle.r; })
-            .attr('fill', (d) => { return d.circle.fill; })
-            .attr('stroke', (d) => { return d.circle.stroke.color; })
-            .attr('stroke-width', (d) => { return d.circle.stroke.width; })
-            .call(d3.drag()
-                  .on("start", (d) => {
-                      this.nodeDrag_start(d, simulator);
-                      this._callback(d, d3.event, 'drag-start');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("drag", (d) => {
-                      this.nodeDrag_dragged(d);
-                      this._callback(d, d3.event, 'drag');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("end", (d) => {
-                      this.nodeDrag_end(d, simulator);
-                      this._callback(d, d3.event, 'drag-end');
-                      d3.event.sourceEvent.stopPropagation();
-                  }))
-            .on('click', (d) => {
-                this._callback(d, d3.event, 'click-circle');
-                d3.event.stopPropagation();
-            });
+        // let circles = g_list.append('circle')
+        //     .attr('cx', 100)
+        //     .attr('cy', 90)
+        //     .attr('r', (d) => { return d.circle.r; })
+        //     .attr('fill', (d) => { return d.circle.fill; })
+        //     .attr('stroke', (d) => { return d.circle.stroke.color; })
+        //     .attr('stroke-width', (d) => { return d.circle.stroke.width; })
+        //     .call(d3.drag()
+        //           .on("start", (d) => {
+        //               this.nodeDrag_start(d, simulator);
+        //               this._callback(d, d3.event, 'drag-start');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("drag", (d) => {
+        //               this.nodeDrag_dragged(d);
+        //               this._callback(d, d3.event, 'drag');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("end", (d) => {
+        //               this.nodeDrag_end(d, simulator);
+        //               this._callback(d, d3.event, 'drag-end');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           }))
+        //     .on('click', (d) => {
+        //         this._callback(d, d3.event, 'click-circle');
+        //         d3.event.stopPropagation();
+        //     });
 
 
         g_list.append('text')
             .attr('class', 'circle-label')
-            .attr('x', (d) => {
-                return d.label.circle.position.x;
-            })
-            .attr('y', (d) => {
-                return d.label.circle.position.y;
-            })
             .attr('fill', 'black')
             .attr('stroke', 'black')
             .attr('font-size', (d) => {
-                return d.label.circle.font.size;
+                return d.label.font.size;
             })
-            .text((d) => { return d.label.circle.text; })
+            .text((d) => { return d.label.text; })
             .on('click', (d) => {
                 this._callback(d3.event, 'click-circle', d);
                 d3.event.stopPropagation();
             });
 
-        g_list.append('text')
-            .attr('class', 'node-label')
-            .attr('x', (d) => {
-                return 0;
-            })
-            .attr('y', (d) => {
-                let r2 = d.circle.r * 2;
-                let margin = 11;
-
-                return d.label.node.position.y + r2 + margin;
-            })
-            .attr('fill', 'black')
-            .attr('stroke', 'black')
-            .attr('font-size', (d) => {
-                return d.label.node.font.size;
-            })
-            .text((d) => { return d.label.node.text; });
+        // g_list.append('text')
+        //     .attr('class', 'node-label')
+        //     .attr('fill', 'black')
+        //     .attr('stroke', 'black')
+        //     .attr('font-family', "helvetica, arial, 'hiragino kaku gothic pro', meiryo, 'ms pgothic', sans-serif")
+        //     .attr('font-weight', 'lighter')
+        //     .text((d) => { return d.name; });
     }
     drawNodes(d3svg, nodes, simulator) {
         let g = d3svg.Svg().select('g.data-group.nodes');

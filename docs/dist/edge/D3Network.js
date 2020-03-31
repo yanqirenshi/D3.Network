@@ -1,6 +1,79 @@
-/////
-///// D3Nodes.js
-/////
+class D3Simulator {
+    constructor(reducer) {}
+    make() {
+        let simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d._id; }))
+            .force("charge", d3.forceManyBody())
+            //.force("center", d3.forceCenter(0, 0))
+            .alphaMin(0.001)
+            .alphaTarget(0.002)
+            .force("collide", d3.forceCollide(88));
+
+        simulation.force("charge")
+            .strength(function() { return -0.8; });
+
+        return simulation;
+
+    }
+}
+class D3Ruler {
+    constructor() {}
+    makeRules (length, pitch) {
+        let start = length * -1;
+        let end   = length;
+
+        let x_data = [];
+        let y_data = [];
+        let _id = -1000;
+
+        let axis = [
+            { _id: _id--, x1: start, x2: end, y1: 0, y2: 0},
+            { _id: _id--, x1: 0, x2: 0, y1: start, y2: end},
+        ];
+
+        for (var i=start ; i < end ; i+=pitch)
+            if (i!=0)
+                x_data.push({ _id: _id--, x1:i, y1:start, x2:i, y2: end});
+
+        for (var i=start ; i < end ; i+=pitch)
+            if (i!=0)
+            y_data.push({ _id: _id--, x1:start, y1:i, x2:end, y2: i});
+
+        return { axis: axis, roules: [].concat(x_data).concat(y_data) };
+    };
+
+    draw (d3svg, data) {
+
+        let svg = d3svg.Svg();
+        let background = svg.selectAll('g.data-group.rules');
+
+        background.selectAll('line.grid')
+            .data(data.roules, (d) => { return d._id; })
+            .enter()
+            .append('line')
+            .attr('class', 'grid')
+            .attr('x1', (d) => { return d.x1;})
+            .attr('y1', (d) => { return d.y1;})
+            .attr('x2', (d) => { return d.x2;})
+            .attr('y2', (d) => { return d.y2;})
+            .attr('stroke', '#888888')
+            .attr('stroke-width', 0.3)
+            .attr('stroke-dasharray', 3);
+
+        background.selectAll('line.axis')
+            .data(data.axis, (d) => { return d._id; })
+            .enter()
+            .append('line')
+            .attr('class', 'axis')
+            .attr('x1', (d) => { return d.x1;})
+            .attr('y1', (d) => { return d.y1;})
+            .attr('x2', (d) => { return d.x2;})
+            .attr('y2', (d) => { return d.y2;})
+            .attr('stroke', '#333333')
+            .attr('stroke-width', 6)
+            .attr('stroke-dasharray', 6);
+    }
+}
 class D3Nodes {
     constructor() {
     }
@@ -39,9 +112,37 @@ class D3Nodes {
      * **************************************************************** */
     tickedNodes(g) {
         g.selectAll('g.node')
-            .attr("transform", function(d) {
-                return 'translate(' + d.x + ',' + d.y + ')';
+            .selectAll('circle')
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; });
+
+        g.selectAll('g.node')
+            .selectAll('text.circle-label')
+            .attr("x", function(d) {
+                let cls = d._class;
+
+                if (cls=='ALGORITHM') return d.x - 16;
+                if (cls=='BOOK')      return d.x - 12;
+                if (cls=='ARXIV')     return d.x - 10;
+
+                return d.x - 12;
+            })
+            .attr("y", function(d) {
+                let cls = d._class;
+
+                if (cls=='ALGORITHM') return d.y + 12;
+                if (cls=='BOOK')      return d.y + 4;
+                if (cls=='ARXIV')     return d.y + 4;
+
+                return d.y + 4;
             });
+
+        g.selectAll('g.node')
+            .selectAll('text.node-label')
+            .attr("x", function(d) {
+                return d.x + 33;
+            })
+            .attr("y", function(d) { return d.y + 4; });
     }
     tickedEdges(g) {
         g.selectAll('line.edge')
@@ -79,74 +180,57 @@ class D3Nodes {
             .append('g')
             .attr('class', (d) => {
                 return 'node ' + d._class;
-            })
-            .attr('transform', (d) => {
-                return 'translate(' + d.x + ',' + d.y + ')';
             });
 
-        let circles = g_list.append('circle')
-            .attr('r', (d) => { return d.circle.r; })
-            .attr('fill', (d) => { return d.circle.fill; })
-            .attr('stroke', (d) => { return d.circle.stroke.color; })
-            .attr('stroke-width', (d) => { return d.circle.stroke.width; })
-            .call(d3.drag()
-                  .on("start", (d) => {
-                      this.nodeDrag_start(d, simulator);
-                      this._callback(d, d3.event, 'drag-start');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("drag", (d) => {
-                      this.nodeDrag_dragged(d);
-                      this._callback(d, d3.event, 'drag');
-                      d3.event.sourceEvent.stopPropagation();
-                  })
-                  .on("end", (d) => {
-                      this.nodeDrag_end(d, simulator);
-                      this._callback(d, d3.event, 'drag-end');
-                      d3.event.sourceEvent.stopPropagation();
-                  }))
-            .on('click', (d) => {
-                this._callback(d, d3.event, 'click-circle');
-                d3.event.stopPropagation();
-            });
+        // let circles = g_list.append('circle')
+        //     .attr('cx', 100)
+        //     .attr('cy', 90)
+        //     .attr('r', (d) => { return d.circle.r; })
+        //     .attr('fill', (d) => { return d.circle.fill; })
+        //     .attr('stroke', (d) => { return d.circle.stroke.color; })
+        //     .attr('stroke-width', (d) => { return d.circle.stroke.width; })
+        //     .call(d3.drag()
+        //           .on("start", (d) => {
+        //               this.nodeDrag_start(d, simulator);
+        //               this._callback(d, d3.event, 'drag-start');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("drag", (d) => {
+        //               this.nodeDrag_dragged(d);
+        //               this._callback(d, d3.event, 'drag');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           })
+        //           .on("end", (d) => {
+        //               this.nodeDrag_end(d, simulator);
+        //               this._callback(d, d3.event, 'drag-end');
+        //               d3.event.sourceEvent.stopPropagation();
+        //           }))
+        //     .on('click', (d) => {
+        //         this._callback(d, d3.event, 'click-circle');
+        //         d3.event.stopPropagation();
+        //     });
 
 
         g_list.append('text')
             .attr('class', 'circle-label')
-            .attr('x', (d) => {
-                return d.label.circle.position.x;
-            })
-            .attr('y', (d) => {
-                return d.label.circle.position.y;
-            })
             .attr('fill', 'black')
             .attr('stroke', 'black')
             .attr('font-size', (d) => {
-                return d.label.circle.font.size;
+                return d.label.font.size;
             })
-            .text((d) => { return d.label.circle.text; })
+            .text((d) => { return d.label.text; })
             .on('click', (d) => {
                 this._callback(d3.event, 'click-circle', d);
                 d3.event.stopPropagation();
             });
 
-        g_list.append('text')
-            .attr('class', 'node-label')
-            .attr('x', (d) => {
-                return 0;
-            })
-            .attr('y', (d) => {
-                let r2 = d.circle.r * 2;
-                let margin = 11;
-
-                return d.label.node.position.y + r2 + margin;
-            })
-            .attr('fill', 'black')
-            .attr('stroke', 'black')
-            .attr('font-size', (d) => {
-                return d.label.node.font.size;
-            })
-            .text((d) => { return d.label.node.text; });
+        // g_list.append('text')
+        //     .attr('class', 'node-label')
+        //     .attr('fill', 'black')
+        //     .attr('stroke', 'black')
+        //     .attr('font-family', "helvetica, arial, 'hiragino kaku gothic pro', meiryo, 'ms pgothic', sans-serif")
+        //     .attr('font-weight', 'lighter')
+        //     .text((d) => { return d.name; });
     }
     drawNodes(d3svg, nodes, simulator) {
         let g = d3svg.Svg().select('g.data-group.nodes');
@@ -166,12 +250,10 @@ class D3Nodes {
         this.drawNodes(d3svg, nodes, simulator);
     }
 }
-
-/////
-///// D3Edges.js
-/////
 class D3Edges {
-    constructor(reducer) {}
+    constructor(reducer) {
+        let last_draw_time = null;
+    }
     /* ****************************************************************
      * Utility
      * **************************************************************** */
@@ -196,20 +278,28 @@ class D3Edges {
             .enter()
             .append('line')
             .attr('class', 'edge')
-            .attr('stroke', (d) => {
-                if (!d.stroke || !d.stroke.color)
-                    return '#888888';
-
-                return d.stroke.color;
-            })
-            .attr('stroke-width', (d) => {
-                if (!d.stroke || !d.stroke.w)
-                    return 0.8;
-
-                return d.stroke.w;
-            });
+            .attr('stroke', '#888888')
+            .attr('stroke-width', 0.8)
+            .attr('marker-end', "url(#arrowhead)");
+    }
+    initMarker (d3svg) {
+        let svg = d3svg.Svg();
+        svg
+            .append("defs")
+            .append("marker")
+            .attr('id', "arrowhead")
+            .attr('refX', 0)
+            .attr('refY', 2)
+            .attr('markerWidth', 4)
+            .attr('markerHeight', 4)
+            .attr('orient', "auto")
+            .attr( 'd', "M 0,0 V 4 L4,2 Z")
+            .attr( 'fill', "steelblue");
     }
     draw(d3svg, edges, simulator) {
+        if (!this.last_draw_time)
+            this.initMarker(d3svg);
+
         let edges_list = (edges && edges.list) ? edges.list : [];
 
         simulator.force("link")
@@ -219,33 +309,10 @@ class D3Edges {
 
         this.drawEdge_Remove(d3svg, edges_list);
         this.drawEdge_Add(d3svg, edges_list);
+
+        this.last_draw_time = new Date();
     }
 }
-
-/////
-///// D3Simulator.js
-/////
-class D3Simulator {
-    constructor(reducer) {}
-    make() {
-        let simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function(d) { return d._id; }))
-            .force("charge", d3.forceManyBody())
-            .alphaMin(0.001)
-            .alphaTarget(0.002)
-            .force("collide", d3.forceCollide(88));
-
-        simulation.force("charge")
-            .strength(function() { return -0.8; });
-
-        return simulation;
-
-    }
-}
-
-/////
-///// D3Base.js
-/////
 class D3Base {
     constructor(reducer) {}
     draw(d3svg) {
