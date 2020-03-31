@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-class D3ForceNodeCore {
+class D3NetworkNodeCore {
     makeDataCircle (option) {
         let circle = {
             r: 55,
@@ -134,11 +134,35 @@ class D3ForceNodeCore {
 }
 
 
-export default class D3ForceNode extends D3ForceNodeCore {
+export default class D3NetworkNode extends D3NetworkNodeCore {
     constructor (canvas) {
         super();
 
         this.canvas = canvas ? canvas : null; // Type is D3 selection
+    }
+    makeClipCircle (svg) {
+        // http://bl.ocks.org/itagakishintaro/71a7c6779933c189c3ca
+
+        var defs = svg.append('defs');
+
+        let data = [55, 66, 77, 88, 99];
+
+        defs
+            .selectAll("circle")
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('id', (d) => { return 'circle-' + d; })
+            .attr('r', (d) => { return d; });
+
+        defs
+            .selectAll("clipPath")
+            .data(data)
+            .enter()
+            .append('clipPath')
+            .attr('id', (d) => { return 'clip-' + d; })
+            .append('use')
+            .attr('xlink:href', (d) => { return '#circle-' + d; });
     }
     drawGroup (data) {
         return this.canvas

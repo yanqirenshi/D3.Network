@@ -1,4 +1,4 @@
-export default class D3ForceEdge {
+export default class D3NetworkEdge {
     constructor () {
         this.elements = null;
     }
