@@ -1,0 +1,22 @@
+{
+  "name": "d3.network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanqirenshi/D3.Network.git"
+  },
+  "author": "yanqirenshi <yanqirenshi@gmail.com> (https://github.com/yanqirenshi)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yanqirenshi/D3.Network/issues"
+  },
+  "homepage": "https://github.com/yanqirenshi/D3.Network#readme",
+  "dependencies": {
+    "d3": "^5.15.0"
+  }
+}
