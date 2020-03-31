@@ -1,6 +1,6 @@
 {
-  "name": "d3.network",
-  "version": "1.0.0",
+  "name": "@yanqirenshi/d3.network",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
