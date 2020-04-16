@@ -50,8 +50,6 @@ export default class D3NetworkSimulation {
             if(!d3.event.active)
                 simulation.alphaTarget(0);
 
-            console.log([d.fx, d.fy]);
-
             if (d.move!=='support') {
                 d.fx = null;
                 d.fy = null;

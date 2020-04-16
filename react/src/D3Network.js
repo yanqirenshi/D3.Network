@@ -11,7 +11,7 @@ export {D3NetworkSimulation}
 export default class D3Network {
     constructor () {
         this._d3_element = null;
-        this._callback = {};
+        this._callbacks = {};
         this._behavior = {};
 
         this.node = null;
@@ -20,7 +20,7 @@ export default class D3Network {
     }
     init (params) {
         this._d3_element = params.d3_element || null;
-        this._callback = params.callback || null;
+        this._callbacks = params.callbacks || null;
 
         this._behavior = {};
 
@@ -82,7 +82,7 @@ export default class D3Network {
 
         let simulation = this.simulation;
 
-        let callbacks = simulation.makeDragAndDropCallbacks(this._callback);
+        let callbacks = simulation.makeDragAndDropCallbacks(this._callbacks);
 
         let link = this.edge.draw(links_data);
         let node = this.node.draw(nodes_data, callbacks);
