@@ -1,5 +1,3 @@
-import * as d3 from 'd3';
-
 class D3NetworkNodeCore {
     makeDataCircle (option) {
         let circle = {
@@ -16,13 +14,13 @@ class D3NetworkNodeCore {
 
         return circle;
     }
+    // TODO: はいきよてい
     makeDataLink (data) {
+
         if (!data)
             return null;
 
-        return {
-            to: null, // string
-        };
+        return data;
     }
     makeDataImage (option) {
         if (!option.image)
@@ -114,6 +112,7 @@ class D3NetworkNodeCore {
             circle: this.makeDataCircle(option),
             image:  this.makeDataImage(option),
             link:   this.makeDataLink(option.link),
+            action: option.action || null,
             //
             _id: option._id,
             _class: 'NODE',
@@ -135,102 +134,116 @@ class D3NetworkNodeCore {
 
 
 export default class D3NetworkNode extends D3NetworkNodeCore {
-    constructor (canvas) {
+    constructor (d3, svg) {
         super();
 
-        this.canvas = canvas ? canvas : null; // Type is D3 selection
+        this.d3 = d3;
+        this.svg = svg;
+
+        this.elements = null;
     }
-    makeClipCircle (svg) {
-        // http://bl.ocks.org/itagakishintaro/71a7c6779933c189c3ca
-
-        var defs = svg.append('defs');
-
-        let data = [55, 66, 77, 88, 99];
-
-        defs
-            .selectAll("circle")
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr('id', (d) => { return 'circle-' + d; })
-            .attr('r', (d) => { return d; });
-
-        defs
-            .selectAll("clipPath")
-            .data(data)
-            .enter()
-            .append('clipPath')
-            .attr('id', (d) => { return 'clip-' + d; })
-            .append('use')
-            .attr('xlink:href', (d) => { return '#circle-' + d; });
+    clickAction (d, callbacks) {
+        if (d.link) {
+            window.open(d.link.to);
+            return;
+        }
+        if (d.action && d.action.type==='link') {
+            window.open(d.action.to);
+            return;
+        }
+        if (callbacks && callbacks.node && callbacks.node.click) {
+            callbacks.node.click(d);
+            return;
+        }
     }
     drawGroup (data) {
-        return this.canvas
+        return this.svg
             .selectAll("g")
             .data(data, (d) => { return d._id; })
             .enter()
             .append("g");
-
     }
-    drawCircle (groups, callbacks) {
-        groups
-            .append('circle')
-            .on("click", (d) => {
-                if (callbacks && callbacks.node && callbacks.node.click)
-                    callbacks.node.click(d);
-            })
-            .attr("r", (d) => {
-                return d.circle.r || 22;
-            })
-            .attr("fill", (d) => {
-                return d.circle.fill || "#ffffff";
-            })
-            .attr("stroke-width",8)
-            .attr("stroke", '#aacf53');
-
+    drawCircleImage (groups, callbacks) {
         groups
             .filter((d) => {
                 return d.image;
             })
             .append('image')
             .on("click", (d) => {
-                if (callbacks && callbacks.node && callbacks.node.click)
-                    callbacks.node.click(d);
+                this.clickAction(d, callbacks);
             })
             .attr('xlink:href', (d) => {
-                return `${process.env.PUBLIC_URL}${d.image.url}`;
+                return d.image.url;
             })
-            .attr('clip-path', 'url(#clip-55)')
-            .attr('width',  (d) => { return d.image.w; })
-            .attr('height', (d) => { return d.image.h; })
-            .attr('x', (d) => { return d.image.x; })
-            .attr('y', (d) => { return d.image.y; });
+            .attr('clip-path', (d) => {
+                return `url(#clip-${d.circle.r})`;
+            })
+            .attr('width', (d) => {
+                return d.image.w;
+            })
+            .attr('height', (d) => {
+                return d.image.h;
+            })
+            .attr('x', (d) => {
+                return d.image.x;
+            })
+            .attr('y', (d) => {
+                return d.image.y;
+            });
     }
-    drawCircleLabel (groups) {
+    drawCircle (groups, callbacks) {
+        groups
+            .append('circle')
+            .on("click", (d) => {
+                if (callbacks && callbacks.node && callbacks.node.click) {
+                    callbacks.node.click(d);
+                    return;
+                }
+            })
+            .attr("r", (d) => {
+                return d.circle.r;
+            })
+            .attr("fill", (d) => {
+                return d.circle.fill;
+            })
+            .attr("stroke-width", (d) => {
+                return d.circle.stroke.width;
+            })
+            .attr("stroke", (d) => {
+                return d.circle.stroke.color;
+            });
+
+        this.drawCircleImage(groups, callbacks);
+    }
+    drawCircleLabel (groups, callbacks) {
         return groups
             .filter((d) => {
                 return !d.image;
             })
             .append('text')
+            .on("click", (d) => {
+                this.clickAction(d, callbacks);
+            })
             .attr("x", (d) => {
-                return d.label.x || 0;
+                return d.label.x;
             })
             .attr("y", (d) => {
-                return d.label.y || 0;
+                return d.label.y;
             })
             .attr("font-size", (d) => {
                 return d.label.font.size;
             })
             .text((d) => {
-                return d.label.text || '';
+                return d.label.text;
             });
     }
-    draw (canvas, data, callbacks) {
-        this.canvas = canvas;
+    draw (data, callbacks) {
+        let d3 = this.d3;
 
         let groups = this.drawGroup(data);
 
-        groups.call(d3.drag()
+        groups.call(d3
+                    .drag()
                     .on("start", callbacks.dragStarted)
                     .on("drag", callbacks.dragged)
                     .on("end", callbacks.dragEnded));

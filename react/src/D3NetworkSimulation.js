@@ -1,7 +1,7 @@
-import * as d3 from 'd3';
-
 export default class D3NetworkSimulation {
-    constructor () {
+    constructor (d3) {
+        this.d3 = d3;
+
         this.simulation = d3
             .forceSimulation()
             .alphaMin(0.001)
@@ -13,15 +13,10 @@ export default class D3NetworkSimulation {
             .force("link", d3.forceLink().id(function(d) {
                 return d._id;
             }))
-            .force("charge", d3.forceManyBody())
-        ;
-
-        this.simulation
-            .force("charge")
-            .strength(function() { return -10; });
-
+            .force("charge", d3.forceManyBody());
     }
     makeDragAndDropCallbacks (callback) {
+        let d3 = this.d3;
         let simulation = this.simulation;
 
         let dragStarted = (d) => {
@@ -54,6 +49,8 @@ export default class D3NetworkSimulation {
 
             if(!d3.event.active)
                 simulation.alphaTarget(0);
+
+            console.log([d.fx, d.fy]);
 
             if (d.move!=='support') {
                 d.fx = null;
