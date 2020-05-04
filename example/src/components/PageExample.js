@@ -27,6 +27,13 @@ function PageExample () {
         }
     };
 
+    const callback = (action, data) => {
+        if (action==='click-tab') {
+            setSelectedTab(data);
+            return;
+        };
+    };
+
     return (
         <div style={style.root}>
 
@@ -37,7 +44,8 @@ function PageExample () {
           <div>
             <div>
               <Tabs tabs={tabs}
-                    selected_tab={selected_tab} />
+                    selected_tab={selected_tab}
+                    callback={callback} />
             </div>
 
             <div>

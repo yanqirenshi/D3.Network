@@ -15,7 +15,12 @@ function Tabs (props) {
     };
 
     const isFirstTab = (i) => {
-        return i===0; 
+        return i===0;
+    };
+
+    const clickTab = (e) => {
+        let tab_id = e.target.getAttribute('tab_id') * 1;
+        props.callback('click-tab', tab_id);
     };
 
     return (
@@ -24,10 +29,16 @@ function Tabs (props) {
             {
                 props.tabs.map((d,i) => {
                     return <li key={d.id}
+                               tab_id={d.id}
                                className={isSelected(d)}
-                               style={isFirstTab(i) ? style.first_tab : null}>
-                             <a>
-                               <span>{d.label}</span>
+                               style={isFirstTab(i) ? style.first_tab : null}
+                               onClick={clickTab}>
+
+                             <a tab_id={d.id}
+                                onClick={clickTab}>
+
+                               <span tab_id={d.id}
+                                     onClick={clickTab}>{d.label}</span>
                              </a>
                            </li>;
                 })
