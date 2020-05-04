@@ -8,13 +8,25 @@ import Description from './DataNodes/Description';
 function TabContentDataNodes (props) {
     const style = {
         root: {
+            display: 'flex',
+        },
+        left: {
+            width: '488px',
+        },
+        right: {
+            flexGrou: 1,
         },
     };
 
     return (
         <div className='tab-content' style={style.root}>
-          <Code graph_data={props.graph_data} />
-          <Description />
+          <div style={style.left}>
+            <Code graph_data={props.graph_data} />
+          </div>
+
+          <div style={style.right}>
+            <Description />
+          </div>
         </div>
     );
 }

@@ -8,13 +8,25 @@ import Description from './ReactComponent/Description';
 function TabContentReactComponent () {
     const style = {
         root: {
+            display: 'flex',
+        },
+        left: {
+            width: '488px',
+        },
+        right: {
+            flexGrou: 1,
         },
     };
 
     return (
         <div className='tab-content' style={style.root}>
-          <Code />
-          <Description />
+          <div style={style.left}>
+            <Code />
+          </div>
+
+          <div style={style.right}>
+            <Description />
+          </div>
         </div>
     );
 }

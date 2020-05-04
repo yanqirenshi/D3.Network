@@ -5,14 +5,13 @@ import 'bulma/css/bulma.min.css';
 function Description () {
     const style = {
         root: {
+            paddingTop: '0px',
         },
     };
 
     return (
         <section className="section" style={style.root}>
           <div className="container">
-            <h1 className="title">Description</h1>
-            {/* <h2 className="subtitle"></h2> */}
           </div>
         </section>
     );

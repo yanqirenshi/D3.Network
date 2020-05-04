@@ -4,7 +4,13 @@ import 'bulma/css/bulma.min.css';
 
 function Code (props) {
     const style = {
-        root: {},
+        root: {
+            paddingTop: '0px',
+        },
+        pre: {
+            fontSize: '14px',
+            lineHeight: '16px',
+        }
     };
 
     const data = props.graph_data.edges;
@@ -12,11 +18,10 @@ function Code (props) {
     return (
         <section className="section" style={style.root}>
           <div className="container">
-            <h1 className="title">Code</h1>
-            {/* <h2 className="subtitle"></h2> */}
-
             <div className="contents">
-              <pre>{JSON.stringify(data, null, 4)}</pre>
+              <pre style={style.pre}>
+                {JSON.stringify(data, null, 4)}
+              </pre>
             </div>
           </div>
         </section>
