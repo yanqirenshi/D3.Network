@@ -28,54 +28,25 @@ export default class D3Network {
 
         let d3_element = this._d3_element;
 
-        this.node = new D3NetworkNode(d3, d3_element);
-        this.edge = new D3NetworkEdge(d3, d3_element);
-        this.simulation = new D3NetworkSimulation(d3);
+        // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
+        this.line_color = params.line_color || null;
+
+        this.node = new D3NetworkNode();
+        // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
+        this.edge = new D3NetworkEdge().init({line_color: this.line_color});
+        this.simulation = new D3NetworkSimulation();
+
 
         return this;
     }
     behavior () {
-
         return this._behavior;
     }
-    getCircleRList (data) {
-        let list = [];
-
-        for (let node of data.node) {
-            let v = node.circle.r;
-            if (list.indexOf(v)===-1)
-                list.push(v);
-        };
-
-        return list;
-    }
-    makeClipCircle (data) {
-        // http://bl.ocks.org/itagakishintaro/71a7c6779933c189c3ca
-
-        let list = this.getCircleRList(data);
-
-        var defs = this._d3_element.append('defs');
-
-        defs
-            .selectAll("circle")
-            .data(list)
-            .enter()
-            .append('circle')
-            .attr('id', (d) => { return 'circle-' + d; })
-            .attr('r', (d) => { return d; });
-
-        defs
-            .selectAll("clipPath")
-            .data(list)
-            .enter()
-            .append('clipPath')
-            .attr('id', (d) => { return 'clip-' + d; })
-            .append('use')
-            .attr('xlink:href', (d) => { return '#circle-' + d; });
-    }
     draw (data) {
-        this.makeClipCircle(data);
+        let place = this._d3_element;
 
+        this.node.drawClipCircle(place, data);
+        this.edge.drawEdgeArrowhead(place);
 
         let nodes_data = data.node;
         let links_data = data.link;
@@ -84,10 +55,10 @@ export default class D3Network {
 
         let callbacks = simulation.makeDragAndDropCallbacks(this._callbacks);
 
-        let link = this.edge.draw(links_data);
-        let node = this.node.draw(nodes_data, callbacks);
+        let links = this.edge.draw(place, links_data);
+        let nodes = this.node.draw(place, nodes_data, callbacks);
 
-        simulation.settingNodes(nodes_data, link, node);
+        simulation.settingNodes(nodes_data, links, nodes);
         simulation.settingEdges(links_data);
     }
 }

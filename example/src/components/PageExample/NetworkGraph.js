@@ -4,8 +4,13 @@ import D3Svg from '@yanqirenshi/d3.svg';
 
 import D3Network, {
     D3NetworkNode,
-    D3NetworkEdge
+    D3NetworkEdge,
 } from '@yanqirenshi/d3.network';
+
+// import D3Network, {
+//     D3NetworkNode,
+//     D3NetworkEdge,
+// } from './D3Network.js';
 
 function NetworkGraph (props) {
     const [n_node] = useState(new D3NetworkNode());

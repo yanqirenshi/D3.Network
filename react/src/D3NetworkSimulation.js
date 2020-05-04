@@ -1,7 +1,10 @@
-export default class D3NetworkSimulation {
-    constructor (d3) {
-        this.d3 = d3;
+import * as d3 from 'd3';
 
+import D3NetworkNode from './D3NetworkNode.js';
+import D3NetworkEdge from './D3NetworkEdge.js';
+
+export default class D3NetworkSimulation {
+    constructor () {
         this.simulation = d3
             .forceSimulation()
             .alphaMin(0.001)
@@ -16,7 +19,6 @@ export default class D3NetworkSimulation {
             .force("charge", d3.forceManyBody());
     }
     makeDragAndDropCallbacks (callback) {
-        let d3 = this.d3;
         let simulation = this.simulation;
 
         let dragStarted = (d) => {
@@ -70,19 +72,15 @@ export default class D3NetworkSimulation {
 
         return out;
     }
-    settingNodes (nodes_data, link, node) {
+    settingNodes (nodes_data, link, nodes) {
+        const n_node = new D3NetworkNode();
+        const n_edge = new D3NetworkEdge();
+
         this.simulation
             .nodes(nodes_data)
             .on("tick", () => {
-                link
-                    .attr("x1", function(d) { return d.source.x; })
-                    .attr("y1", function(d) { return d.source.y; })
-                    .attr("x2", function(d) { return d.target.x; })
-                    .attr("y2", function(d) { return d.target.y; });
-                node
-                    .attr("transform", (d) => {
-                        return `translate(${d.x}, ${d.y})`;
-                    });
+                n_edge.tick(link);
+                n_node.tick(nodes);
             });
     }
     settingEdges (links_data) {

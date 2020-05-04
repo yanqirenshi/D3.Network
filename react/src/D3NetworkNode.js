@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 class D3NetworkNodeCore {
     makeDataCircle (option) {
         let circle = {
@@ -134,14 +136,51 @@ class D3NetworkNodeCore {
 
 
 export default class D3NetworkNode extends D3NetworkNodeCore {
-    constructor (d3, svg) {
+    constructor () {
         super();
-
-        this.d3 = d3;
-        this.svg = svg;
 
         this.elements = null;
     }
+    /////
+    ///// draw clip circle
+    /////
+    getCircleRList (data) {
+        let list = [];
+
+        for (let node of data.node) {
+            let v = node.circle.r;
+            if (list.indexOf(v)===-1)
+                list.push(v);
+        };
+
+        return list;
+    }
+    drawClipCircle (place, data) {
+        // http://bl.ocks.org/itagakishintaro/71a7c6779933c189c3ca
+        let list = this.getCircleRList(data);
+
+        var defs = place.append('defs');
+
+        defs
+            .selectAll("circle")
+            .data(list)
+            .enter()
+            .append('circle')
+            .attr('id', (d) => { return 'circle-' + d; })
+            .attr('r', (d) => { return d; });
+
+        defs
+            .selectAll("clipPath")
+            .data(list)
+            .enter()
+            .append('clipPath')
+            .attr('id', (d) => { return 'clip-' + d; })
+            .append('use')
+            .attr('xlink:href', (d) => { return '#circle-' + d; });
+    }
+    /////
+    ///// draw
+    /////
     clickAction (d, callbacks) {
         if (d.link) {
             window.open(d.link.to);
@@ -156,12 +195,13 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
             return;
         }
     }
-    drawGroup (data) {
-        return this.svg
-            .selectAll("g")
+    drawGroup (place, data) {
+        return place
+            .selectAll("g.ng-node")
             .data(data, (d) => { return d._id; })
             .enter()
-            .append("g");
+            .append("g")
+            .attr('class', 'ng-node');
     }
     drawCircleImage (groups, callbacks) {
         groups
@@ -237,10 +277,8 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
                 return d.label.text;
             });
     }
-    draw (data, callbacks) {
-        let d3 = this.d3;
-
-        let groups = this.drawGroup(data);
+    draw (place, data, callbacks) {
+        let groups = this.drawGroup(place, data);
 
         groups.call(d3
                     .drag()
@@ -252,5 +290,11 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
         this.drawCircleLabel(groups, callbacks);
 
         return groups;
+    }
+    tick (nodes) {
+        nodes
+            .attr("transform", (d) => {
+                return `translate(${d.x}, ${d.y})`;
+            });
     }
 }
