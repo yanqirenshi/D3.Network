@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import * as d3 from 'd3';
-
 import D3Svg from '@yanqirenshi/d3.svg';
 
 import D3Network, {
@@ -12,6 +10,8 @@ import D3Network, {
 function NetworkGraph (props) {
     const [n_node] = useState(new D3NetworkNode());
     const [n_edge] = useState(new D3NetworkEdge());
+    const [d3svg] = useState(new D3Svg());
+    const [d3network] = useState(new D3Network());
 
     const style = {
         root: {
@@ -22,29 +22,31 @@ function NetworkGraph (props) {
     };
 
     useEffect(() => {
-        let d3_element = d3.select('#network-graph');
-
-        let d3svg = new D3Svg({
-            d3_element: d3_element,
+        d3svg.init({
+            d3_element: '#network-graph',
+            w: 1024,
+            h: 333,
             look: { at: { x:0, y:0 }, },
             scale: 2,
         });
 
-        let network = new D3Network()
-            .init({
-                d3_element: d3_element,
-                callbacks: {
-                    node: {
-                        click: (d) => { console.log(['Click node', d]); },
-                    },
-                },
-            });
+        let callbacks = {
+            node: {
+                click: (d) => { console.log(['Click node', d]); },
+            },
+        };
 
-        network.draw({
-            node: props.graph_data.nodes.map((d) => {
-                return n_node.makeData(d);
-            }),
-            link: n_edge.makeData(props.graph_data.edges),
+        d3network.init({
+            d3_element: d3svg.d3Element(),
+            callbacks: callbacks,
+        });
+
+        let nodes = props.graph_data.nodes;
+        let edges = props.graph_data.edges;
+
+        d3network.draw({
+            node: nodes.map((d) => { return n_node.makeData(d); }),
+            link: edges.map((d) => { return n_edge.makeData(d); }),
         });
     });
 

@@ -12,7 +12,7 @@ function UsageDirectories () {
         <section className="section" style={style.root}>
           <div className="container">
             <h1 className="title">Directories</h1>
-            <h2 className="subtitle"></h2>
+            {/* <h2 className="subtitle"></h2> */}
           </div>
         </section>
     );

@@ -13,7 +13,7 @@ function Code (props) {
         <section className="section" style={style.root}>
           <div className="container">
             <h1 className="title">Code</h1>
-            <h2 className="subtitle"></h2>
+            {/* <h2 className="subtitle"></h2> */}
 
             <div className="contents">
               <pre>{JSON.stringify(data, null, 4)}</pre>

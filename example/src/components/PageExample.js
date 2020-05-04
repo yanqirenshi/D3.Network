@@ -7,7 +7,7 @@ import NetworkGraph from './PageExample/NetworkGraph';
 import Explanation  from './PageExample/Explanation'; 
 
 function PageExample () {
-    const [graph_data, setGraphData] = useState({
+    const [graph_data] = useState({
         nodes: new ExampleDataNodes().makeData(),
         edges: new ExampleDataEdges().makeData(),
     });
