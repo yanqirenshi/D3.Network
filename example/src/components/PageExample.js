@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 
+import ExampleDataNodes from '../js/ExampleDataNodes.js';
+import ExampleDataEdges from '../js/ExampleDataEdges.js';
+
 import Graph       from './PageExample/Graph';
 import Tabs        from './PageExample/Tabs';
 import TabContents from './PageExample/TabContents';
 
 function PageExample () {
     const [selected_tab, setSelectedTab] = useState(0);
+    const [graph_data, setGraphData] = useState({
+        nodes: new ExampleDataNodes().makeData(),
+        edges: new ExampleDataEdges().makeData(),
+    });
 
     const tabs = [
         { id: 0, label: 'React Componet' },
@@ -49,7 +56,8 @@ function PageExample () {
             </div>
 
             <div>
-              <TabContents selected_tab={selected_tab} />
+              <TabContents selected_tab={selected_tab}
+                           graph_data={graph_data} />
             </div>
           </div>
         </div>

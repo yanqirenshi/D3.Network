@@ -14,8 +14,8 @@ function TabContents (props) {
     return (
         <div style={style.root}>
           {props.selected_tab===0 && <TabContentReactComponent />}
-          {props.selected_tab===1 && <TabContentDataNodes />}
-          {props.selected_tab===2 && <TabContentDataEdges />}
+          {props.selected_tab===1 && <TabContentDataNodes graph_data={props.graph_data} />}
+          {props.selected_tab===2 && <TabContentDataEdges graph_data={props.graph_data} />}
           {props.selected_tab===3 && <TabContentUsage />}
         </div>
     );

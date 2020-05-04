@@ -4,7 +4,7 @@ import './TabContent.css';
 import DataEdgesCode from './DataEdgesCode';
 import DataEdgesDescription from './DataEdgesDescription';
 
-function TabContentDataEdges () {
+function TabContentDataEdges (props) {
     const style = {
         root: {
         },
@@ -12,7 +12,7 @@ function TabContentDataEdges () {
 
     return (
         <div className='tab-content' style={style.root}>
-          <DataEdgesCode />
+          <DataEdgesCode graph_data={props.graph_data} />
           <DataEdgesDescription />
         </div>
     );
