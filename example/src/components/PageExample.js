@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import ExampleDataNodes from '../js/ExampleDataNodes.js';
 import ExampleDataEdges from '../js/ExampleDataEdges.js';
 
-import Graph       from './PageExample/Graph';
-import Tabs        from './PageExample/Tabs';
-import TabContents from './PageExample/TabContents';
+import NetworkGraph from './PageExample/NetworkGraph';
+import Tabs         from './PageExample/Tabs';
+import TabContents  from './PageExample/TabContents';
 
 function PageExample () {
     const [selected_tab, setSelectedTab] = useState(0);
@@ -45,7 +45,7 @@ function PageExample () {
         <div style={style.root}>
 
           <div style={style.graph_area}>
-            <Graph />
+            <NetworkGraph graph_data={graph_data} />
           </div>
 
           <div>
