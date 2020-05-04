@@ -4,22 +4,13 @@ import ExampleDataNodes from '../js/ExampleDataNodes.js';
 import ExampleDataEdges from '../js/ExampleDataEdges.js';
 
 import NetworkGraph from './PageExample/NetworkGraph';
-import Tabs         from './PageExample/Tabs';
-import TabContents  from './PageExample/TabContents';
+import Explanation  from './PageExample/Explanation'; 
 
 function PageExample () {
-    const [selected_tab, setSelectedTab] = useState(0);
     const [graph_data, setGraphData] = useState({
         nodes: new ExampleDataNodes().makeData(),
         edges: new ExampleDataEdges().makeData(),
     });
-
-    const tabs = [
-        { id: 0, label: 'React Componet' },
-        { id: 1, label: 'Data: Ndoe' },
-        { id: 2, label: 'Data: Edge' },
-        { id: 3, label: 'Usage' },
-    ];
 
     const style = {
         root: {
@@ -34,13 +25,6 @@ function PageExample () {
         }
     };
 
-    const callback = (action, data) => {
-        if (action==='click-tab') {
-            setSelectedTab(data);
-            return;
-        };
-    };
-
     return (
         <div style={style.root}>
 
@@ -49,16 +33,7 @@ function PageExample () {
           </div>
 
           <div>
-            <div>
-              <Tabs tabs={tabs}
-                    selected_tab={selected_tab}
-                    callback={callback} />
-            </div>
-
-            <div>
-              <TabContents selected_tab={selected_tab}
-                           graph_data={graph_data} />
-            </div>
+            <Explanation graph_data={graph_data}/>
           </div>
         </div>
     );
