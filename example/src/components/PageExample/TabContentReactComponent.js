@@ -2,8 +2,8 @@ import React from 'react';
 
 import './TabContent.css';
 
-import ReactComponentCode from './ReactComponentCode';
-import ReactComponentDescription from './ReactComponentDescription';
+import Code from './ReactComponent/Code';
+import Description from './ReactComponent/Description';
 
 function TabContentReactComponent () {
     const style = {
@@ -13,8 +13,8 @@ function TabContentReactComponent () {
 
     return (
         <div className='tab-content' style={style.root}>
-          <ReactComponentCode />
-          <ReactComponentDescription />
+          <Code />
+          <Description />
         </div>
     );
 }

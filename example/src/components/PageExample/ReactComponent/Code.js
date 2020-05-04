@@ -2,7 +2,7 @@ import React from 'react';
 
 import 'bulma/css/bulma.min.css';
 
-function DataEdgesDescription () {
+function Code () {
     const style = {
         root: {
         },
@@ -11,11 +11,11 @@ function DataEdgesDescription () {
     return (
         <section className="section" style={style.root}>
           <div className="container">
-            <h1 className="title">Description</h1>
+            <h1 className="title">Code</h1>
             <h2 className="subtitle"></h2>
           </div>
         </section>
     );
 }
 
-export default DataEdgesDescription;
+export default Code;

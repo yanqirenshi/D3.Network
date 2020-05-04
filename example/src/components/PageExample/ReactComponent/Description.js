@@ -2,7 +2,7 @@ import React from 'react';
 
 import 'bulma/css/bulma.min.css';
 
-function ReactComponentDescription () {
+function Description () {
     const style = {
         root: {
         },
@@ -18,4 +18,4 @@ function ReactComponentDescription () {
     );
 }
 
-export default ReactComponentDescription;
+export default Description;

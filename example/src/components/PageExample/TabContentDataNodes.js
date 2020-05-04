@@ -2,8 +2,8 @@ import React from 'react';
 
 import './TabContent.css';
 
-import DataNodesCode from './DataNodesCode';
-import DataNodesDescription from './DataNodesDescription';
+import Code from './DataNodes/Code';
+import Description from './DataNodes/Description';
 
 function TabContentDataNodes (props) {
     const style = {
@@ -13,8 +13,8 @@ function TabContentDataNodes (props) {
 
     return (
         <div className='tab-content' style={style.root}>
-          <DataNodesCode graph_data={props.graph_data} />
-          <DataNodesDescription />
+          <Code graph_data={props.graph_data} />
+          <Description />
         </div>
     );
 }

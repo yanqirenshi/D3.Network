@@ -1,8 +1,8 @@
 import React from 'react';
 
 import './TabContent.css';
-import DataEdgesCode from './DataEdgesCode';
-import DataEdgesDescription from './DataEdgesDescription';
+import Code from './DataEdges/Code';
+import Description from './DataEdges/Description';
 
 function TabContentDataEdges (props) {
     const style = {
@@ -12,8 +12,8 @@ function TabContentDataEdges (props) {
 
     return (
         <div className='tab-content' style={style.root}>
-          <DataEdgesCode graph_data={props.graph_data} />
-          <DataEdgesDescription />
+          <Code graph_data={props.graph_data} />
+          <Description />
         </div>
     );
 }

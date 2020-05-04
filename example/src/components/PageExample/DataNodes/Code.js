@@ -2,7 +2,7 @@ import React from 'react';
 
 import 'bulma/css/bulma.min.css';
 
-function DataNodesCode (props) {
+function Code (props) {
     const style = {
         root: {},
     };
@@ -23,4 +23,4 @@ function DataNodesCode (props) {
     );
 }
 
-export default DataNodesCode;
+export default Code;

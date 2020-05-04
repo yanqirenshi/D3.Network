@@ -2,20 +2,25 @@ import React from 'react';
 
 import 'bulma/css/bulma.min.css';
 
-function ReactComponentCode () {
+function Code (props) {
     const style = {
-        root: {
-        },
+        root: {},
     };
+
+    const data = props.graph_data.edges;
 
     return (
         <section className="section" style={style.root}>
           <div className="container">
             <h1 className="title">Code</h1>
             <h2 className="subtitle"></h2>
+
+            <div className="contents">
+              <pre>{JSON.stringify(data, null, 4)}</pre>
+            </div>
           </div>
         </section>
     );
 }
 
-export default ReactComponentCode;
+export default Code;

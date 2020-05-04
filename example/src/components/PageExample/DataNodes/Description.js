@@ -2,7 +2,7 @@ import React from 'react';
 
 import 'bulma/css/bulma.min.css';
 
-function DataNodesDescription () {
+function Description () {
     const style = {
         root: {
         },
@@ -18,4 +18,4 @@ function DataNodesDescription () {
     );
 }
 
-export default DataNodesDescription;
+export default Description;
