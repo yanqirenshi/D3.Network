@@ -1,6 +1,10 @@
 import React from 'react';
 
 import './TabContent.css';
+import UsageDescription from './Usage/UsageDescription';
+import UsageInstall     from './Usage/UsageInstall';
+import UsageDirectories from './Usage/UsageDirectories';
+
 
 function TabContentUsage () {
     const style = {
@@ -10,7 +14,9 @@ function TabContentUsage () {
 
     return (
         <div className='tab-content' style={style.root}>
-          TabContentUsage
+          <UsageDescription />
+          <UsageInstall />
+          <UsageDirectories />
         </div>
     );
 }

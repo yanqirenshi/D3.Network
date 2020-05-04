@@ -2,6 +2,9 @@ import React from 'react';
 
 import './TabContent.css';
 
+import DataNodesCode from './DataNodesCode';
+import DataNodesDescription from './DataNodesDescription';
+
 function TabContentDataNodes () {
     const style = {
         root: {
@@ -10,7 +13,8 @@ function TabContentDataNodes () {
 
     return (
         <div className='tab-content' style={style.root}>
-          TabContentDataNodes
+          <DataNodesCode />
+          <DataNodesDescription />
         </div>
     );
 }

@@ -2,6 +2,9 @@ import React from 'react';
 
 import './TabContent.css';
 
+import ReactComponentCode from './ReactComponentCode';
+import ReactComponentDescription from './ReactComponentDescription';
+
 function TabContentReactComponent () {
     const style = {
         root: {
@@ -10,7 +13,8 @@ function TabContentReactComponent () {
 
     return (
         <div className='tab-content' style={style.root}>
-          TabContentReactComponent
+          <ReactComponentCode />
+          <ReactComponentDescription />
         </div>
     );
 }
