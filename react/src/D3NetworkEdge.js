@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 
+import Geometry from './Geometry.js';
+
 class D3NetworkEdgeCore {
     constructor () {
         // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
@@ -46,7 +48,7 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
             .append("defs")
             .append("marker")
             .attr('id', "arrowhead",)
-            .attr('refX', (8+1))
+            .attr('refX', 4)
             .attr('refY', 2)
             .attr('markerWidth', 4)
             .attr('markerHeight', 4)
@@ -70,7 +72,8 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
         return this.d3line;
     }
     draw (place, data) {
-        var line = this.getD3Line();
+        const line = this.getD3Line();
+        const geo = new Geometry();
 
         this.elements = place
             .selectAll("path.ng-edge")
@@ -80,17 +83,6 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
             .enter()
             .append('path')
             .attr('class', 'ng-edge')
-            .attr('d', (d) => {
-                let from = [
-                    d.source.x || 0,
-                    d.source.y || 0 ,
-                ];
-                let to = [
-                    d.source.x || 0,
-                    d.source.y || 0,
-                ];
-                return line([from, to]);
-            })
             .attr("stroke-width", (d) => {
                 return d.line.stroke.width;
             })
@@ -102,7 +94,34 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
         return this.elements;
     }
     tick (edges) {
-        let line = this.getD3Line();
+        const line = this.getD3Line();
+        const geo = new Geometry();
+
+        edges
+            .attr('d', (d) => {
+                let line_new = geo.lineOfNode2Node(d.source, d.target);
+
+                return line([
+                    [line_new.from.x, line_new.from.y],
+                    [line_new.to.x,   line_new.to.y],
+                ]);
+            })
+            .attr('stroke-dasharray', function (d) {
+                let edge_length = this.getTotalLength();
+                let ref1 = 8;
+
+                let r1 = d.source.circle.stroke.width;
+                let r2 = d.target.circle.stroke.width;
+
+                let t = edge_length - (r1 + r2 + ref1);
+
+                return "0 " + r1 + " " + t + " " + r2;
+            })
+            .attr('stroke-dashoffset', 0);
+    }
+    tick_BK (edges) {
+        const line = this.getD3Line();
+        const geo = new Geometry();
 
         edges
             .attr('d', (d) => {
@@ -110,6 +129,7 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
                     d.source.x,
                     d.source.y ,
                 ];
+
                 let to = [
                     d.target.x,
                     d.target.y,
