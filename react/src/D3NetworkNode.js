@@ -107,7 +107,7 @@ class D3NetworkNodeCore {
         let data = {
             x: option.x || 0,
             y: option.y || 0,
-            freeze: this.makeDataFreeze(option.select),
+            freeze: this.makeDataFreeze(option.freeze),
             move:   this.makeDataMove(option),
             select: this.makeDataSelect(option.select),
             label:  this.makeDataLabel(option),
@@ -128,7 +128,7 @@ class D3NetworkNodeCore {
         if (option._class)
             data._class = option._class;
 
-        data._core = {...data};
+        data._core = {...option};
 
         return data;
     }
