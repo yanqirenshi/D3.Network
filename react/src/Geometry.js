@@ -83,7 +83,6 @@ export default class Geometry {
         };
 
         // 新しい to を算出する。
-        let arrowhead_buffer = 4;
         let to_1q_new = {
             x: vec_1q.x - (cos_theta * (from.circle.r + from.circle.stroke.width)),
             y: vec_1q.y - (sin_theta * (from.circle.r + from.circle.stroke.width)),

@@ -92,31 +92,36 @@ class D3NetworkNodeCore {
         return false;
     }
     makeDataSelect (data) {
-        if (!data)
+        let select = data.select;
+
+        if (!select)
             return false;
 
-        if (data===true)
+        if (select===true)
             return true;
 
-        if (data===false)
+        if (select===false)
             return false;
 
         return false;
     }
     makeData (option = {}) {
+        if (option._node)
+            return option._node;
+
         let data = {
             x: option.x || 0,
             y: option.y || 0,
             freeze: this.makeDataFreeze(option.freeze),
             move:   this.makeDataMove(option),
-            select: this.makeDataSelect(option.select),
+            select: this.makeDataSelect(option),
             label:  this.makeDataLabel(option),
             circle: this.makeDataCircle(option),
             image:  this.makeDataImage(option),
             link:   this.makeDataLink(option.link),
             action: option.action || null,
             //
-            _id: option._id,
+            id: option.id,
             _class: 'NODE',
         };
 
@@ -129,6 +134,7 @@ class D3NetworkNodeCore {
             data._class = option._class;
 
         data._core = {...option};
+        option._node = data;
 
         return data;
     }
@@ -147,7 +153,7 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
     getCircleRList (data) {
         let list = [];
 
-        for (let node of data.node) {
+        for (let node of data) {
             let v = node.circle.r;
             if (list.indexOf(v)===-1)
                 list.push(v);
@@ -196,12 +202,22 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
         }
     }
     drawGroup (place, data) {
-        return place
+        let enter =  place
             .selectAll("g.ng-node")
-            .data(data, (d) => { return d._id; })
+            .data(data, (d) => { return d.id; })
             .enter()
             .append("g")
             .attr('class', 'ng-node');
+
+        let exit =  place
+            .selectAll("g.ng-node")
+            .data(data, (d) => { return d.id; })
+            .exit();
+
+        return {
+            enter: enter,
+            exit: exit,
+        };
     }
     drawCircleImage (groups, callbacks) {
         groups
@@ -236,6 +252,8 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
             .append('circle')
             .on("click", (d) => {
                 if (callbacks && callbacks.node && callbacks.node.click) {
+                    d.select = !d.select;
+
                     callbacks.node.click(d);
                     return;
                 }
@@ -277,9 +295,7 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
                 return d.label.text;
             });
     }
-    draw (place, data, callbacks) {
-        let groups = this.drawGroup(place, data);
-
+    drawEnter (groups, callbacks) {
         groups.call(d3
                     .drag()
                     .on("start", callbacks.dragStarted)
@@ -291,7 +307,17 @@ export default class D3NetworkNode extends D3NetworkNodeCore {
 
         return groups;
     }
+    draw (place, data, callbacks) {
+        let groups = this.drawGroup(place, data);
+
+        this.drawEnter(groups.enter, callbacks);
+
+        return place.selectAll("g.ng-node");
+    }
     tick (nodes) {
+        if (!nodes)
+            return;
+
         nodes
             .attr("transform", (d) => {
                 return `translate(${d.x}, ${d.y})`;

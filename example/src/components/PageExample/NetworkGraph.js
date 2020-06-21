@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import D3Svg from '@yanqirenshi/d3.svg';
+import D3Network from '@yanqirenshi/d3.network';
 
-import D3Network, {
-    D3NetworkNode,
-    D3NetworkEdge,
-} from '@yanqirenshi/d3.network';
-
-// import D3Network, {
-//     D3NetworkNode,
-//     D3NetworkEdge,
-// } from './D3Network.js';
 
 function NetworkGraph (props) {
-    const [n_node] = useState(new D3NetworkNode());
-    const [n_edge] = useState(new D3NetworkEdge());
-    const [d3svg] = useState(new D3Svg());
     const [d3network] = useState(new D3Network());
+    const [selected_node, setSelectedNode] = useState(null);
 
     const style = {
         root: {
@@ -24,43 +13,62 @@ function NetworkGraph (props) {
             width: '100%',
             height: '333px',
         },
+        operators: {
+            marginTop: '11px',
+        },
     };
 
     useEffect(() => {
-        d3svg.init({
-            d3_element: '#network-graph',
-            w: 1024,
-            h: 333,
-            look: { at: { x:0, y:0 }, },
-            scale: 2,
-        });
-
-        let callbacks = {
-            node: {
-                click: (d) => { console.log(['Click node', d]); },
-            },
-        };
-
         d3network.init({
-            d3_element: d3svg.d3Element(),
-            callbacks: callbacks,
+            svg: {
+                selector: '#network-graph',
+                w: 1024,
+                h: 333,
+            },
+            callbacks: {
+                node: {
+                    click: (d) => {
+                        setSelectedNode(d.select ? d : null);
+                    },
+                },
+            },
         });
+    }, []);
 
-        let nodes = props.graph_data.nodes;
-        let edges = props.graph_data.edges;
+    useEffect(() => {
+        let data = props.graph_data;
 
-        d3network.draw({
-            node: nodes.map((d) => { return n_node.makeData(d); }),
-            link: edges.map((d) => { return n_edge.makeData(d); }),
-        });
+        d3network
+            .nodes(data.nodes)
+            .edges(data.edges);
     });
 
+    const clickAdd = () => {
+        props.callback('add_node', selected_node);
+    };
+
     return (
-        <div style={style.root}>
-          <svg id='network-graph'
-               width='1024px'
-               height='333px' />
-        </div>
+        <>
+          <div style={style.root}>
+            <svg id='network-graph'
+                 width='1024px'
+                 height='333px' />
+
+          </div>
+          <div style={style.operators}>
+            <button className="button"
+                    disabled={selected_node ? false : true}
+                    onClick={clickAdd} >
+              Add Node
+            </button>
+
+            <button className="button"
+                    style={{marginLeft: '11px'}}
+                    disabled={selected_node ? false : true}>
+              Delete Node
+            </button>
+          </div>
+        </>
     );
 }
 

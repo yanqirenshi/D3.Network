@@ -8,7 +8,7 @@ class ExampleDataNodes {
 
         return [
             {
-                _id: 1,
+                id: 1,
                 _class: 'NODE-A',
                 x: 0,
                 y: 0,
@@ -19,10 +19,11 @@ class ExampleDataNodes {
                 circle: {...defaultCircle},
             },
             {
-                _id: 2,
+                id: 2,
                 _class: 'NODE-B',
                 x: 0,
                 y: 0,
+                move: 'freeze',
                 label: {
                     text: 'Node #2',
                     font: { size: 12 },
@@ -30,7 +31,7 @@ class ExampleDataNodes {
                 circle: {...defaultCircle},
             },
             {
-                _id: 3,
+                id: 3,
                 _class: 'NODE-C',
                 x: 0,
                 y: 0,

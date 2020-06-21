@@ -10,6 +10,9 @@ class D3NetworkEdgeCore {
     makeDataLine (data) {
     }
     makeData (data) {
+        if (data._edge)
+            return data._edge;
+
         let out = {
             source: data.source,
             target: data.target,
@@ -22,7 +25,10 @@ class D3NetworkEdgeCore {
             },
             // arrowhead: {},
             _core: data,
+            id: data.id,
         };
+
+        data._edge = out;
 
         return out;
     }
@@ -72,13 +78,10 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
         return this.d3line;
     }
     draw (place, data) {
-        const line = this.getD3Line();
-        const geo = new Geometry();
-
         this.elements = place
             .selectAll("path.ng-edge")
             .data(data, (d) => {
-                return d._id;
+                return d.id;
             })
             .enter()
             .append('path')
@@ -91,9 +94,12 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
             })
             .attr( 'marker-end', "url(#arrowhead)");
 
-        return this.elements;
+        return place.selectAll("path.ng-edge");
     }
     tick (edges) {
+        if (!edges)
+            return;
+
         const line = this.getD3Line();
         const geo = new Geometry();
 
@@ -112,37 +118,6 @@ export default class D3NetworkEdge extends D3NetworkEdgeCore {
 
                 let r1 = d.source.circle.stroke.width;
                 let r2 = d.target.circle.stroke.width;
-
-                let t = edge_length - (r1 + r2 + ref1);
-
-                return "0 " + r1 + " " + t + " " + r2;
-            })
-            .attr('stroke-dashoffset', 0);
-    }
-    tick_BK (edges) {
-        const line = this.getD3Line();
-        const geo = new Geometry();
-
-        edges
-            .attr('d', (d) => {
-                let from = [
-                    d.source.x,
-                    d.source.y ,
-                ];
-
-                let to = [
-                    d.target.x,
-                    d.target.y,
-                ];
-
-                return line([from, to]);
-            })
-            .attr('stroke-dasharray', function (d) {
-                let edge_length = this.getTotalLength();
-                let ref1 = 8;
-
-                let r1 = d.source.circle.r + d.source.circle.stroke.width;
-                let r2 = d.target.circle.r + d.target.circle.stroke.width;
 
                 let t = edge_length - (r1 + r2 + ref1);
 

@@ -1,22 +1,25 @@
 import * as d3 from 'd3';
 
-import D3NetworkNode from './D3NetworkNode.js';
-import D3NetworkEdge from './D3NetworkEdge.js';
-
 export default class D3NetworkSimulation {
-    constructor () {
-        this.simulation = d3
-            .forceSimulation()
+    constructor (tick) {
+        this.makeSimuration(tick);
+    }
+    makeSimuration (tick) {
+        const collide = d3
+              .forceCollide(88)
+              .radius((d) => { return 111; });
+
+        const link = d3
+              .forceLink()
+              .id((d) =>{ return d.id; });
+
+        this.simulation = d3.forceSimulation()
             .alphaMin(0.001)
             .alphaTarget(0.002)
-            .force(
-                "collide",
-                d3.forceCollide(88).radius(function(d) { return 111; })
-            )
-            .force("link", d3.forceLink().id(function(d) {
-                return d._id;
-            }))
-            .force("charge", d3.forceManyBody());
+            .force('collide', collide)
+            .force("link", link)
+            .force("charge", d3.forceManyBody())
+            .on("tick", tick);
     }
     makeDragAndDropCallbacks (callback) {
         let simulation = this.simulation;
@@ -72,20 +75,10 @@ export default class D3NetworkSimulation {
 
         return out;
     }
-    settingNodes (nodes_data, link, nodes) {
-        const n_node = new D3NetworkNode();
-        const n_edge = new D3NetworkEdge();
-
-        this.simulation
-            .nodes(nodes_data)
-            .on("tick", () => {
-                n_edge.tick(link);
-                n_node.tick(nodes);
-            });
+    nodes (nodes_data) {
+        this.simulation.nodes(nodes_data);
     }
-    settingEdges (links_data) {
-        this.simulation
-            .force("link")
-            .links(links_data);
+    edges (edge_data) {
+        this.simulation.force('link').links(edge_data);
     }
 }

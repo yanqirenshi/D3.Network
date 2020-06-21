@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-import ExampleDataNodes from '../js/ExampleDataNodes.js';
-import ExampleDataEdges from '../js/ExampleDataEdges.js';
+import ExampleData from '../js/ExampleData.js';
 
 import NetworkGraph from './PageExample/NetworkGraph';
-import Explanation  from './PageExample/Explanation'; 
+import Explanation  from './PageExample/Explanation';
 
 function PageExample () {
-    const [graph_data] = useState({
-        nodes: new ExampleDataNodes().makeData(),
-        edges: new ExampleDataEdges().makeData(),
+    const [exdata] = useState(new ExampleData());
+    const [graph_data, setGraphData] = useState({
+        nodes: exdata.makeData('nodes'),
+        edges: exdata.makeData('edges'),
     });
 
     const style = {
@@ -30,6 +30,29 @@ function PageExample () {
         },
     };
 
+    const callback = (action, data) => {
+        if (action==='add_node') {
+            let nodes = [...graph_data.nodes];
+            let edges = [...graph_data.edges];
+
+            let from_node = nodes.find((d) => {
+                return d.id === data.id;
+            });
+
+            let new_node = exdata.makeNodeData();
+
+            let new_edge = exdata.makeEdgeData(from_node, new_node);
+
+            nodes.push(new_node);
+            edges.push(new_edge);
+
+            setGraphData({
+                nodes: nodes,
+                edges: edges,
+            });
+        }
+    };
+
     return (
         <div style={style.root}>
 
@@ -38,7 +61,8 @@ function PageExample () {
           </div>
 
           <div style={style.graph_area}>
-            <NetworkGraph graph_data={graph_data} />
+            <NetworkGraph graph_data={graph_data}
+                          callback={callback} />
           </div>
 
           <div>

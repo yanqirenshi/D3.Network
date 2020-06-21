@@ -43,26 +43,6 @@ function Tabs (props) {
                            </li>;
                 })
             }
-            {/* <li className="is-active" style={style.first_tab}> */}
-            {/*   <a> */}
-            {/*     <span>React Component</span> */}
-            {/*   </a> */}
-            {/* </li> */}
-            {/* <li> */}
-            {/*   <a> */}
-            {/*     <span>Data: Nodes</span> */}
-            {/*   </a> */}
-            {/* </li> */}
-            {/* <li> */}
-            {/*   <a> */}
-            {/*     <span>Data: Edges</span> */}
-            {/*   </a> */}
-            {/* </li> */}
-            {/* <li> */}
-            {/*   <a> */}
-            {/*     <span>Usage</span> */}
-            {/*   </a> */}
-            {/* </li> */}
           </ul>
         </div>
     );
