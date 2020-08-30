@@ -34,6 +34,9 @@ export default class D3Network {
 
         this._callbacks = {};
         this.callbacks = null;
+
+        this._initialized_at = null;
+        this._drawed_at = null;
     }
     init (params) {
         // D3SVG
@@ -57,7 +60,12 @@ export default class D3Network {
         // Arrowhead
         this.edge.drawEdgeArrowhead(this.getSvgElement());
 
+        this._initialized_at = new Date();
+
         return this;
+    }
+    isInitialized () {
+        return this._initialized_at ? true : false;
     }
     /* *********** */
     /*  Simulator  */
@@ -149,6 +157,15 @@ export default class D3Network {
     /* ******** */
     /*  Data    */
     /* ******** */
+    data (data) {
+        this.nodes(data.nodes);
+        this.edges(data.edges);
+
+        this._drawed_at = new Date();
+    }
+    drawedAt () {
+        return this._drawed_at;
+    }
     nodes (data) {
         if (!data || data.length===0)
             return this;

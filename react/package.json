@@ -1,6 +1,6 @@
 {
     "name": "@yanqirenshi/d3.network",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/yanqirenshi/D3.Network#readme",
     "dependencies": {
+        "@yanqirenshi/d3.svg": "0.0.13",
         "d3": "^5.15.0"
     },
     "devDependencies": {
