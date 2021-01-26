@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
 
-import ExampleData from '../js/ExampleData.js';
+import D3Network, {Camera} from '../libs/index.js';
 
-import NetworkGraph from './PageExample/NetworkGraph';
 import Explanation  from './PageExample/Explanation';
+import ExampleData from '../data/ExampleData.js';
+
+const style = {
+    root: {
+        background: '#ffffff',
+        width: '1024px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    graph_area: {
+        marginTop: '22px',
+        marginBottom: '22px',
+    },
+    h1: {
+        fontSize: '33px',
+        fontWeight: 'bold',
+        marginTop: '11px',
+    },
+};
 
 function PageExample () {
     const [exdata] = useState(new ExampleData());
@@ -11,24 +29,12 @@ function PageExample () {
         nodes: exdata.makeData('nodes'),
         edges: exdata.makeData('edges'),
     });
-
-    const style = {
-        root: {
-            background: '#ffffff',
-            width: '1024px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+    const [camera] = useState(new Camera({
+        look: {
+            at: {x:0, y:0},
+            scale: 2,
         },
-        graph_area: {
-            marginTop: '22px',
-            marginBottom: '22px',
-        },
-        h1: {
-            fontSize: '33px',
-            fontWeight: 'bold',
-            marginTop: '11px',
-        },
-    };
+    }));
 
     const callback = (action, data) => {
         if (action==='add_node') {
@@ -61,8 +67,9 @@ function PageExample () {
           </div>
 
           <div style={style.graph_area}>
-            <NetworkGraph graph_data={graph_data}
-                          callback={callback} />
+            <D3Network source={graph_data}
+                       camera={camera}
+                       callback={callback} />
           </div>
 
           <div>

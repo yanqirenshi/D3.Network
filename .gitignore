@@ -1,5 +1,8 @@
 .DS_Store
 *~
 react/node_modules
-example/node_modules
 example/build/
+
+node_modules/
+example/node_modules
+dev/node_modules
