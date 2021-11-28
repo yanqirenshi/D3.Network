@@ -1,5 +1,9 @@
-import D3Network, {Camera} from './components/D3Network.js';
+import D3Network from './components/D3Network.js';
 
-export { Camera };
+import Rectum from './js/Rectum.js';
+
+export {
+    Rectum,
+};
 
 export default D3Network;

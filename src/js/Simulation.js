@@ -24,7 +24,7 @@ export default class Simulation {
     makeDragAndDropCallbacks (callback) {
         let simulation = this.simulation;
 
-        let dragStarted = (d) => {
+        let dragStarted = (event, d) => {
             if (d.move==='freeze')
                 return;
 
@@ -33,26 +33,26 @@ export default class Simulation {
                 d.fy_keep = d.fy;
             }
 
-            if(!d3.event.active)
+            if(!event.active)
                 simulation.alphaTarget(0.3).restart();
 
             d.fx = d.x;
             d.fy = d.y;
         };
 
-        let dragged = (d) => {
+        let dragged = (event, d) => {
             if (d.move==='freeze')
                 return;
 
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
+            d.fx = event.x;
+            d.fy = event.y;
         };
 
-        let dragEnded = (d) => {
+        let dragEnded = (event, d) => {
             if (d.move==='freeze')
                 return;
 
-            if(!d3.event.active)
+            if(!event.active)
                 simulation.alphaTarget(0);
 
             if (d.move!=='support') {

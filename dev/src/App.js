@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import D3Network, {Camera} from './libs/index.js';
+import D3Network, { Rectum } from './libs/index.js';
 
+// import NODE_DATA from './data/NODE_DATA.js';
+// import EDGE_DATA from './data/EDGE_DATA.js';
 import ExampleData from './data/ExampleData.js';
 
-function App() {
-    const [exdata] = useState(new ExampleData());
+const rectum = new Rectum({
+    transform: {
+        k: 1.0,
+        x: 0.0,
+        y: 0.0,
+    },
+});
+
+const style = {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    graph_area: {
+        width:  800 + (22*2),
+        height: 600 + (22*2),
+        background: '#eee',
+        padding: 22,
+        borderRadius: 5,
+    },
+};
+
+const exdata = new ExampleData();
+
+export default function App() {
     const [graph_data, setGraphData] = useState({
         nodes: exdata.makeData('nodes'),
         edges: exdata.makeData('edges'),
     });
-    const [camera] = useState(new Camera({
-        look: {
-            at: {x:0, y:0},
-            scale: 1,
-        },
-    }));
+
+    useEffect(()=> rectum.data(graph_data), [graph_data]);
 
     return (
-        <div style={{padding: 22}}>
-          <div style={{height:555, border: '1px solid #eee'}}>
-            <D3Network source={graph_data} camera={camera} />
+        <div style={style}>
+          <div style={style.graph_area}>
+            <D3Network rectum={rectum} />
           </div>
         </div>
     );
 }
-
-export default App;

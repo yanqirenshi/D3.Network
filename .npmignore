@@ -6,3 +6,4 @@ riot
 src
 .babelrc
 .gitignore
+dist

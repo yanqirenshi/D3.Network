@@ -42,7 +42,7 @@ var Simulation = /*#__PURE__*/function () {
     value: function makeDragAndDropCallbacks(callback) {
       var simulation = this.simulation;
 
-      var dragStarted = function dragStarted(d) {
+      var dragStarted = function dragStarted(event, d) {
         if (d.move === 'freeze') return;
 
         if (d.move === 'support') {
@@ -50,20 +50,20 @@ var Simulation = /*#__PURE__*/function () {
           d.fy_keep = d.fy;
         }
 
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
       };
 
-      var dragged = function dragged(d) {
+      var dragged = function dragged(event, d) {
         if (d.move === 'freeze') return;
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
+        d.fx = event.x;
+        d.fy = event.y;
       };
 
-      var dragEnded = function dragEnded(d) {
+      var dragEnded = function dragEnded(event, d) {
         if (d.move === 'freeze') return;
-        if (!d3.event.active) simulation.alphaTarget(0);
+        if (!event.active) simulation.alphaTarget(0);
 
         if (d.move !== 'support') {
           d.fx = null;

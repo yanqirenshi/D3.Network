@@ -1,4 +1,4 @@
-import Asshole from '@yanqirenshi/assh0le';
+import {Colon} from '@yanqirenshi/assh0le';
 
 import Node from './Node';
 import Edge from './Edge';
@@ -8,7 +8,7 @@ export {Node}
 export {Edge}
 export {Simulation}
 
-export default class Core extends Asshole {
+export default class Rectum extends Colon {
     constructor (params) {
         super(params);
 
@@ -74,12 +74,14 @@ export default class Core extends Asshole {
     /* ******** */
     /*  Data    */
     /* ******** */
-    data (data) {
-        this.nodes(data.nodes);
-        this.edges(data.edges);
+    draw () {
+        this.nodes(this._data.nodes);
+        this.edges(this._data.edges);
 
         this._drawed_at = new Date();
+        return this;
     }
+
     drawedAt () {
         return this._drawed_at;
     }
@@ -91,7 +93,7 @@ export default class Core extends Asshole {
             return this.node.makeData(d);
         });
 
-        let place = this.getLayerForeground();
+        let place = this.layer('foreground');
 
         // TODO: これは D3Network でデータを管理すべき。
         this.node.drawClipCircle(place, nodes_data);
@@ -113,7 +115,7 @@ export default class Core extends Asshole {
             return this.edge.makeData(d);
         });
 
-        let place = this.layerBackground();
+        let place = this.layer('background');
 
         let simulation = this.simulation;
 
