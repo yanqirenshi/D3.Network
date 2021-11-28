@@ -6,13 +6,23 @@ class NodeCore {
             r: 55,
             fill: '#ffffff',
             stroke: {
-                color: '#d57c6b',
+                color: '#eeeeee',
                 width: 8
             },
         };
 
-        if (option.circle && option.circle.r)
-            circle.r = option.circle.r;
+        if (option.circle) {
+            if (circle.r || circle.r===0)
+                circle.r = option.circle.r;
+
+            const stroke = option.circle.stroke;
+            if (stroke) {
+                if (stroke.color)
+                    circle.stroke.color = stroke.color;
+                if (stroke.width || stroke.width===0)
+                    circle.stroke.width = stroke.width;
+            }
+        }
 
         return circle;
     }

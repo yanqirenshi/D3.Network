@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import D3Network, { Rectum } from './libs/index.js';
 
-// import NODE_DATA from './data/NODE_DATA.js';
-// import EDGE_DATA from './data/EDGE_DATA.js';
 import ExampleData from './data/ExampleData.js';
 
 const rectum = new Rectum({
