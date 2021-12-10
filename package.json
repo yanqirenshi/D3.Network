@@ -1,6 +1,6 @@
 {
     "name": "@yanqirenshi/d3.network",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "See `src/index.html`",
     "main": "dist/index.js",
     "directories": {
