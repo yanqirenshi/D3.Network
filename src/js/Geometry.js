@@ -84,8 +84,8 @@ export default class Geometry {
 
         // 新しい to を算出する。
         let to_1q_new = {
-            x: vec_1q.x - (cos_theta * (from.circle.r + from.circle.stroke.width)),
-            y: vec_1q.y - (sin_theta * (from.circle.r + from.circle.stroke.width)),
+            x: vec_1q.x - (cos_theta * (to.circle.r + to.circle.stroke.width)),
+            y: vec_1q.y - (sin_theta * (to.circle.r + to.circle.stroke.width)),
         };
 
         // 元の象限に戻す。

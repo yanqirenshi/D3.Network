@@ -48,8 +48,8 @@ export default class Rectum extends Colon {
     isInitialized () {
         return this._initialized_at ? true : false;
     }
-    settingAfter () {
-        this.edge.drawEdgeArrowhead(this.getSvgElement());
+    selector_setAfter () {
+        this.edge.drawEdgeArrowhead(this.d3Element());
     }
     /* *********** */
     /*  Simulator  */
@@ -81,7 +81,6 @@ export default class Rectum extends Colon {
         this._drawed_at = new Date();
         return this;
     }
-
     drawedAt () {
         return this._drawed_at;
     }

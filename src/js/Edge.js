@@ -116,10 +116,13 @@ export default class Edge extends EdgeCore {
                 let edge_length = this.getTotalLength();
                 let ref1 = 8;
 
-                let r1 = d.source.circle.stroke.width;
-                let r2 = d.target.circle.stroke.width;
+                // TODO: geo.lineOfNode2Node で計算しているし不要かも。
+                // let r1 = d.source.circle.r / 2;
+                // let r2 = d.target.circle.r / 2;
+                let r1 = 5;
+                let r2 = 5;
 
-                let t = edge_length - (r1 + r2 + ref1);
+                let t = edge_length - (r1 + r2);
 
                 return "0 " + r1 + " " + t + " " + r2;
             })

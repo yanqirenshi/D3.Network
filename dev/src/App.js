@@ -6,9 +6,9 @@ import ExampleData from './data/ExampleData.js';
 
 const rectum = new Rectum({
     transform: {
-        k: 1.0,
-        x: 0.0,
-        y: 0.0,
+        k: 0.7,
+        x: 400.0,
+        y: 400.0,
     },
 });
 

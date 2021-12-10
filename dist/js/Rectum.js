@@ -106,9 +106,9 @@ var Rectum = /*#__PURE__*/function (_Colon) {
       return this._initialized_at ? true : false;
     }
   }, {
-    key: "settingAfter",
-    value: function settingAfter() {
-      this.edge.drawEdgeArrowhead(this.getSvgElement());
+    key: "selector_setAfter",
+    value: function selector_setAfter() {
+      this.edge.drawEdgeArrowhead(this.d3Element());
     }
     /* *********** */
 

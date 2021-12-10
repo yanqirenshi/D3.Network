@@ -1,4 +1,11 @@
 class ExampleDataNodes {
+    defaultCircle (r) {
+        return {
+            r: r || 33,
+            fill: '#eeeeee',
+            stroke: { color: '#888888', width: 1 },
+        };
+    }
     makeData () {
         let defaultCircle = {
             r: 33,
@@ -14,9 +21,9 @@ class ExampleDataNodes {
                 y: 0,
                 label: {
                     text: 'Node #1',
-                    font: { size: 12 },
+                    font: { size: 48 },
                 },
-                circle: {...defaultCircle},
+                circle: this.defaultCircle(55),
             },
             {
                 id: 2,
@@ -26,9 +33,9 @@ class ExampleDataNodes {
                 move: 'freeze',
                 label: {
                     text: 'Node #2',
-                    font: { size: 12 },
+                    font: { size: 24 },
                 },
-                circle: {...defaultCircle},
+                circle: this.defaultCircle(33),
             },
             {
                 id: 3,
@@ -37,9 +44,9 @@ class ExampleDataNodes {
                 y: 0,
                 label: {
                     text: 'Node #3',
-                    font: { size: 12 },
+                    font: { size: 36 },
                 },
-                circle: {...defaultCircle},
+                circle: this.defaultCircle(44),
             },
         ];
     }

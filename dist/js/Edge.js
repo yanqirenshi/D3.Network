@@ -138,10 +138,13 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
         return line([[line_new.from.x, line_new.from.y], [line_new.to.x, line_new.to.y]]);
       }).attr('stroke-dasharray', function (d) {
         var edge_length = this.getTotalLength();
-        var ref1 = 8;
-        var r1 = d.source.circle.stroke.width;
-        var r2 = d.target.circle.stroke.width;
-        var t = edge_length - (r1 + r2 + ref1);
+        var ref1 = 8; // TODO: geo.lineOfNode2Node で計算しているし不要かも。
+        // let r1 = d.source.circle.r / 2;
+        // let r2 = d.target.circle.r / 2;
+
+        var r1 = 5;
+        var r2 = 5;
+        var t = edge_length - (r1 + r2);
         return "0 " + r1 + " " + t + " " + r2;
       }).attr('stroke-dashoffset', 0);
     }

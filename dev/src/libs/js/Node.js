@@ -120,8 +120,8 @@ class NodeCore {
             return option._node;
 
         let data = {
-            x: option.x || 0,
-            y: option.y || 0,
+            x:      option.x || 0,
+            y:      option.y || 0,
             freeze: this.makeDataFreeze(option.freeze),
             move:   this.makeDataMove(option),
             select: this.makeDataSelect(option),
@@ -131,7 +131,7 @@ class NodeCore {
             link:   this.makeDataLink(option.link),
             action: option.action || null,
             //
-            id: option.id,
+            id:     option.id,
             _class: 'NODE',
         };
 
@@ -296,7 +296,7 @@ export default class Node extends NodeCore {
                 return d.label.x;
             })
             .attr("y", (d) => {
-                return d.label.y;
+                return d.label.y + (d.label.font.size * 0.4);
             })
             .attr("font-size", (d) => {
                 return d.label.font.size;

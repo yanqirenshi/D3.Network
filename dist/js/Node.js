@@ -327,7 +327,7 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       }).attr("x", function (d) {
         return d.label.x;
       }).attr("y", function (d) {
-        return d.label.y;
+        return d.label.y + d.label.font.size * 0.4;
       }).attr("font-size", function (d) {
         return d.label.font.size;
       }).text(function (d) {
