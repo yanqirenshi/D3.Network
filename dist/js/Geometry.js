@@ -117,13 +117,13 @@ var Geometry = /*#__PURE__*/function () {
       var cos_theta = b / a; // 新しい from を算出する。
 
       var from_1q_new = {
-        x: cos_theta * from.circle.r,
-        y: sin_theta * from.circle.r
+        x: cos_theta * from.circle.r + 10,
+        y: sin_theta * from.circle.r + 10
       }; // 新しい to を算出する。
 
       var to_1q_new = {
-        x: vec_1q.x - cos_theta * (to.circle.r + to.circle.stroke.width),
-        y: vec_1q.y - sin_theta * (to.circle.r + to.circle.stroke.width)
+        x: vec_1q.x - cos_theta * (to.circle.r + to.circle.stroke.width + 35),
+        y: vec_1q.y - sin_theta * (to.circle.r + to.circle.stroke.width + 35)
       }; // 元の象限に戻す。
 
       var from_new = this.vec2vecAtUnquadrant(from_1q_new, q);

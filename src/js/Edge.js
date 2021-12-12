@@ -54,7 +54,7 @@ export default class Edge extends EdgeCore {
             .append("defs")
             .append("marker")
             .attr('id', "arrowhead",)
-            .attr('refX', 4)
+            .attr('refX', 0)
             .attr('refY', 2)
             .attr('markerWidth', 4)
             .attr('markerHeight', 4)
@@ -119,13 +119,14 @@ export default class Edge extends EdgeCore {
                 // TODO: geo.lineOfNode2Node で計算しているし不要かも。
                 // let r1 = d.source.circle.r / 2;
                 // let r2 = d.target.circle.r / 2;
-                let r1 = 5;
-                let r2 = 5;
+                let r1 = 0;
+                let r2 = 10;
 
                 let t = edge_length - (r1 + r2);
 
-                return "0 " + r1 + " " + t + " " + r2;
+                return t + " " + r2;
             })
-            .attr('stroke-dashoffset', 0);
+            .attr('stroke-dashoffset', 0)
+            .attr('stroke-linecap', "round");
     }
 }

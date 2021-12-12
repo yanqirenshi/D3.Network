@@ -100,7 +100,7 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
   }, {
     key: "drawEdgeArrowhead",
     value: function drawEdgeArrowhead(place) {
-      var marker = place.append("defs").append("marker").attr('id', "arrowhead").attr('refX', 4).attr('refY', 2).attr('markerWidth', 4).attr('markerHeight', 4).attr('orient', "auto");
+      var marker = place.append("defs").append("marker").attr('id', "arrowhead").attr('refX', 0).attr('refY', 2).attr('markerWidth', 4).attr('markerHeight', 4).attr('orient', "auto");
       marker.append("path").attr('d', "M 0,0 V 4 L4,2 Z").attr('fill', this.line_color);
     }
   }, {
@@ -142,11 +142,11 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
         // let r1 = d.source.circle.r / 2;
         // let r2 = d.target.circle.r / 2;
 
-        var r1 = 5;
-        var r2 = 5;
+        var r1 = 0;
+        var r2 = 10;
         var t = edge_length - (r1 + r2);
-        return "0 " + r1 + " " + t + " " + r2;
-      }).attr('stroke-dashoffset', 0);
+        return t + " " + r2;
+      }).attr('stroke-dashoffset', 0).attr('stroke-linecap', "round");
     }
   }]);
 
