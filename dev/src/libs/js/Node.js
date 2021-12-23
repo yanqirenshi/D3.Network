@@ -260,7 +260,7 @@ export default class Node extends NodeCore {
     drawCircle (groups, callbacks) {
         groups
             .append('circle')
-            .on("click", (d) => {
+            .on("click", (event, d) => {
                 if (callbacks && callbacks.node && callbacks.node.click) {
                     d.select = !d.select;
 

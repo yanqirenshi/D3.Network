@@ -38,16 +38,28 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var EdgeCore = /*#__PURE__*/function () {
-  function EdgeCore() {
+  function EdgeCore(params) {
     _classCallCheck(this, EdgeCore);
 
     // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
-    this.line_color = '#aaaaaa';
+    this.line_width = params.width || 6;
+    this.line_color = params.color || '#eeeeee';
   }
 
   _createClass(EdgeCore, [{
     key: "makeDataLine",
-    value: function makeDataLine(data) {}
+    value: function makeDataLine(data) {
+      var line = {
+        stroke: {
+          width: this.line_width,
+          color: this.line_color
+        },
+        filll: this.line_color
+      };
+      if (!data) return line;
+      if (data.width) line.stroke.width = data.width;
+      return line;
+    }
   }, {
     key: "makeData",
     value: function makeData(data) {
@@ -55,13 +67,7 @@ var EdgeCore = /*#__PURE__*/function () {
       var out = {
         source: data.source,
         target: data.target,
-        line: {
-          stroke: {
-            width: 8,
-            color: this.line_color
-          },
-          filll: this.line_color
-        },
+        line: this.makeDataLine(data.line),
         // arrowhead: {},
         _core: data,
         id: data.id
@@ -72,19 +78,20 @@ var EdgeCore = /*#__PURE__*/function () {
   }]);
 
   return EdgeCore;
-}();
+}(); // https://totech.hateblo.jp/entry/2014/11/23/120003
+
 
 var Edge = /*#__PURE__*/function (_EdgeCore) {
   _inherits(Edge, _EdgeCore);
 
   var _super = _createSuper(Edge);
 
-  function Edge() {
+  function Edge(params) {
     var _this;
 
     _classCallCheck(this, Edge);
 
-    _this = _super.call(this);
+    _this = _super.call(this, params);
     _this.elements = null;
     _this.d3line = null;
     return _this;

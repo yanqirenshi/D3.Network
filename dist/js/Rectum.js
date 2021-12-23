@@ -67,7 +67,7 @@ var Rectum = /*#__PURE__*/function (_Colon) {
 
     _this = _super.call(this, params);
     _this.node = new _Node["default"]();
-    _this.edge = new _Edge["default"]();
+    _this.edge = new _Edge["default"](params.edge);
     _this.selection_node = null;
     _this.selection_edge = null; // TODO: 利用していないけど、このクラス自体がデータを管理すべきではないか。と。
 

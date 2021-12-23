@@ -298,7 +298,7 @@ var Node = /*#__PURE__*/function (_NodeCore) {
   }, {
     key: "drawCircle",
     value: function drawCircle(groups, callbacks) {
-      groups.append('circle').on("click", function (d) {
+      groups.append('circle').on("click", function (event, d) {
         if (callbacks && callbacks.node && callbacks.node.click) {
           d.select = !d.select;
           callbacks.node.click(d);
