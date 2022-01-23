@@ -242,7 +242,7 @@ var Node = /*#__PURE__*/function (_NodeCore) {
 
   }, {
     key: "clickAction",
-    value: function clickAction(d, callbacks) {
+    value: function clickAction(e, d, callbacks) {
       if (d.link) {
         window.open(d.link.to);
         return;
@@ -254,7 +254,25 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       }
 
       if (callbacks && callbacks.node && callbacks.node.click) {
-        callbacks.node.click(d);
+        callbacks.node.click(d, e);
+        return;
+      }
+    }
+  }, {
+    key: "dblClickAction",
+    value: function dblClickAction(e, d, callbacks) {
+      if (d.link) {
+        window.open(d.link.to);
+        return;
+      }
+
+      if (d.action && d.action.type === 'link') {
+        window.open(d.action.to);
+        return;
+      }
+
+      if (callbacks && callbacks.node && callbacks.node.dblclick) {
+        callbacks.node.dblclick(d, e);
         return;
       }
     }
@@ -279,8 +297,14 @@ var Node = /*#__PURE__*/function (_NodeCore) {
 
       groups.filter(function (d) {
         return d.image;
-      }).append('image').on("click", function (d) {
-        _this2.clickAction(d, callbacks);
+      }).append('image').on("click", function (e, d) {
+        _this2.clickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("dblclick", function (e, d) {
+        _this2.dblClickAction(e, d, callbacks);
+
+        e.stopPropagation();
       }).attr('xlink:href', function (d) {
         return d.image.url;
       }).attr('clip-path', function (d) {
@@ -298,12 +322,16 @@ var Node = /*#__PURE__*/function (_NodeCore) {
   }, {
     key: "drawCircle",
     value: function drawCircle(groups, callbacks) {
-      groups.append('circle').on("click", function (d) {
-        if (callbacks && callbacks.node && callbacks.node.click) {
-          d.select = !d.select;
-          callbacks.node.click(d);
-          return;
-        }
+      var _this3 = this;
+
+      groups.append('circle').on("click", function (e, d) {
+        _this3.clickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("dblclick", function (e, d) {
+        _this3.dblClickAction(e, d, callbacks);
+
+        e.stopPropagation();
       }).attr("r", function (d) {
         return d.circle.r;
       }).attr("fill", function (d) {
@@ -318,16 +346,22 @@ var Node = /*#__PURE__*/function (_NodeCore) {
   }, {
     key: "drawCircleLabel",
     value: function drawCircleLabel(groups, callbacks) {
-      var _this3 = this;
+      var _this4 = this;
 
       return groups.filter(function (d) {
         return !d.image;
-      }).append('text').on("click", function (d) {
-        _this3.clickAction(d, callbacks);
+      }).append('text').on("click", function (e, d) {
+        _this4.clickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("dblclick", function (e, d) {
+        _this4.dblClickAction(e, d, callbacks);
+
+        e.stopPropagation();
       }).attr("x", function (d) {
         return d.label.x;
       }).attr("y", function (d) {
-        return d.label.y + d.label.font.size * 0.4;
+        return d.label.y + d.label.font.size;
       }).attr("font-size", function (d) {
         return d.label.font.size;
       }).text(function (d) {

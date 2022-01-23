@@ -197,7 +197,23 @@ export default class Node extends NodeCore {
     /////
     ///// draw
     /////
-    clickAction (d, callbacks) {
+    clickAction (e, d, callbacks) {
+        if (d.link) {
+            window.open(d.link.to);
+            return;
+        }
+
+        if (d.action && d.action.type==='link') {
+            window.open(d.action.to);
+            return;
+        }
+
+        if (callbacks && callbacks.node && callbacks.node.click) {
+            callbacks.node.click(d, e);
+            return;
+        }
+    }
+    dblClickAction (e, d, callbacks) {
         if (d.link) {
             window.open(d.link.to);
             return;
@@ -206,8 +222,8 @@ export default class Node extends NodeCore {
             window.open(d.action.to);
             return;
         }
-        if (callbacks && callbacks.node && callbacks.node.click) {
-            callbacks.node.click(d);
+        if (callbacks && callbacks.node && callbacks.node.dblclick) {
+            callbacks.node.dblclick(d, e);
             return;
         }
     }
@@ -235,8 +251,13 @@ export default class Node extends NodeCore {
                 return d.image;
             })
             .append('image')
-            .on("click", (d) => {
-                this.clickAction(d, callbacks);
+            .on("click", (e, d) => {
+                this.clickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("dblclick", (e, d) => {
+                this.dblClickAction(e, d, callbacks);
+                e.stopPropagation();
             })
             .attr('xlink:href', (d) => {
                 return d.image.url;
@@ -260,13 +281,13 @@ export default class Node extends NodeCore {
     drawCircle (groups, callbacks) {
         groups
             .append('circle')
-            .on("click", (d) => {
-                if (callbacks && callbacks.node && callbacks.node.click) {
-                    d.select = !d.select;
-
-                    callbacks.node.click(d);
-                    return;
-                }
+            .on("click", (e, d) => {
+                this.clickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("dblclick", (e, d) => {
+                this.dblClickAction(e, d, callbacks);
+                e.stopPropagation();
             })
             .attr("r", (d) => {
                 return d.circle.r;
@@ -289,14 +310,19 @@ export default class Node extends NodeCore {
                 return !d.image;
             })
             .append('text')
-            .on("click", (d) => {
-                this.clickAction(d, callbacks);
+            .on("click", (e, d) => {
+                this.clickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("dblclick", (e, d) => {
+                this.dblClickAction(e, d, callbacks);
+                e.stopPropagation();
             })
             .attr("x", (d) => {
                 return d.label.x;
             })
             .attr("y", (d) => {
-                return d.label.y + (d.label.font.size * 0.4);
+                return d.label.y + d.label.font.size;
             })
             .attr("font-size", (d) => {
                 return d.label.font.size;

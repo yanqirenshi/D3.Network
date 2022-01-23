@@ -106,7 +106,8 @@ var Geometry = /*#__PURE__*/function () {
       ///               a  c
       ///            __/   |__
       ///             /    |
-      /// cos b/a    +--b--+ tan c/b
+      /// cos b/a    o--b--+ tan c/b
+      ///          (x,y)
       ///
 
       var b = vec_1q.x;

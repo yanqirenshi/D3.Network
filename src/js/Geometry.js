@@ -66,7 +66,8 @@ export default class Geometry {
         ///               a  c
         ///            __/   |__
         ///             /    |
-        /// cos b/a    +--b--+ tan c/b
+        /// cos b/a    o--b--+ tan c/b
+        ///          (x,y)
         ///
         let b = vec_1q.x;
         let c = vec_1q.y;

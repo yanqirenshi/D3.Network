@@ -10,6 +10,18 @@ const rectum = new Rectum({
         x: 400.0,
         y: 400.0,
     },
+    callbacks: {
+        node: {
+            click: (d,e)=> {
+                console.log('click');
+                console.log([d,e]);
+            },
+            dblclick: (d,e)=> {
+                console.log('dblclick');
+                console.log([d,e]);
+            },
+        },
+    },
 });
 
 const style = {
