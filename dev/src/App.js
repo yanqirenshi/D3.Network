@@ -22,6 +22,10 @@ const rectum = new Rectum({
             },
         },
     },
+    edge: {
+        width: 6,
+        color: '#333333',
+    },
 });
 
 const style = {
@@ -42,12 +46,34 @@ const style = {
 const exdata = new ExampleData();
 
 export default function App() {
+    const [rectum, setRectum] = useState(null);
     const [graph_data, setGraphData] = useState({
         nodes: exdata.makeData('nodes'),
         edges: exdata.makeData('edges'),
     });
 
-    useEffect(()=> rectum.data(graph_data), [graph_data]);
+    useEffect(()=> {
+        if (rectum!==null) return;
+
+        setRectum(new Rectum({
+            transform: { k: 0.7, x: 400.0, y: 400.0 },
+            edge: { width: 6, color: '#333333' },
+            callbacks: {
+                node: {
+                    click: (node)=> {
+                        console.log(node);
+                    }
+                }
+            }
+        }));
+    }, [rectum]);
+
+    useEffect(()=> {
+        if (rectum)
+            rectum.data(graph_data);
+    }, [rectum, graph_data]);
+
+    if (!rectum) return null;
 
     return (
         <div style={style}>

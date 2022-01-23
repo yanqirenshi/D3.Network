@@ -5,6 +5,9 @@ class ExampleDataEdges {
                 id: 10,
                 source: 1,
                 target: 2,
+                line: {
+                    width: 8,
+                },
             },
             {
                 id: 11,

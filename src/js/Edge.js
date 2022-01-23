@@ -3,11 +3,27 @@ import * as d3 from 'd3';
 import Geometry from './Geometry.js';
 
 class EdgeCore {
-    constructor () {
+    constructor (params) {
         // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
-        this.line_color = '#aaaaaa';
+        this.line_width = params.width || 6;
+        this.line_color = params.color || '#eeeeee';
     }
     makeDataLine (data) {
+        const line = {
+            stroke: {
+                width: this.line_width,
+                color: this.line_color,
+            },
+            filll: this.line_color,
+        };
+
+        if (!data)
+            return line;
+
+        if (data.width)
+            line.stroke.width = data.width;
+
+        return line;
     }
     makeData (data) {
         if (data._edge)
@@ -16,13 +32,7 @@ class EdgeCore {
         let out = {
             source: data.source,
             target: data.target,
-            line: {
-                stroke: {
-                    width: 8,
-                    color: this.line_color,
-                },
-                filll: this.line_color,
-            },
+            line: this.makeDataLine(data.line),
             // arrowhead: {},
             _core: data,
             id: data.id,
@@ -34,9 +44,10 @@ class EdgeCore {
     }
 }
 
+// https://totech.hateblo.jp/entry/2014/11/23/120003
 export default class Edge extends EdgeCore {
-    constructor () {
-        super();
+    constructor (params) {
+        super(params);
 
         this.elements = null;
 

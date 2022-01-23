@@ -13,7 +13,7 @@ export default class Rectum extends Colon {
         super(params);
 
         this.node = new Node();
-        this.edge = new Edge();
+        this.edge = new Edge(params.edge);
 
         this.selection_node = null;
         this.selection_edge = null;

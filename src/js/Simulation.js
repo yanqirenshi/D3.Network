@@ -13,7 +13,8 @@ export default class Simulation {
               .forceLink()
               .id((d) =>{ return d.id; });
 
-        this.simulation = d3.forceSimulation()
+        this.simulation = d3
+            .forceSimulation()
             .alphaMin(0.001)
             .alphaTarget(0.002)
             .force('collide', collide)
