@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -19,7 +19,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
@@ -33,9 +33,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,7 +43,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var NodeCore = /*#__PURE__*/function () {
   function NodeCore() {
@@ -237,6 +237,49 @@ var Node = /*#__PURE__*/function (_NodeCore) {
         return '#circle-' + d;
       });
     } /////
+    ///// get element
+    /////
+
+  }, {
+    key: "selectRing",
+    value: function selectRing(mode, groups) {
+      if (mode === 'enter') return groups.append('circle').attr('class', 'select-ring');
+      return groups.select("circle.select-ring");
+    }
+  }, {
+    key: "circles",
+    value: function circles(mode, groups, callbacks) {
+      var _this2 = this;
+
+      if (mode === 'enter') return groups.append('circle').on("click", function (e, d) {
+        _this2.clickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("dblclick", function (e, d) {
+        _this2.dblClickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).attr('class', 'base');
+      return groups.select("circle.base");
+    }
+  }, {
+    key: "circleLabels",
+    value: function circleLabels(mode, groups, callbacks) {
+      var _this3 = this;
+
+      if (mode === 'enter') return groups.filter(function (d) {
+        return !d.image;
+      }).append('text').on("click", function (e, d) {
+        _this3.clickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("dblclick", function (e, d) {
+        _this3.dblClickAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).attr('class', 'label');
+      return groups.select("text.label");
+    } /////
     ///// draw
     /////
 
@@ -279,30 +322,32 @@ var Node = /*#__PURE__*/function (_NodeCore) {
   }, {
     key: "drawGroup",
     value: function drawGroup(place, data) {
-      var enter = place.selectAll("g.ng-node").data(data, function (d) {
+      var groups = place.selectAll("g.ng-node").data(data, function (d) {
         return d.id;
-      }).enter().append("g").attr('class', 'ng-node');
+      });
+      var enter = groups.enter().append("g").attr('class', 'ng-node');
       var exit = place.selectAll("g.ng-node").data(data, function (d) {
         return d.id;
       }).exit();
       return {
         enter: enter,
-        exit: exit
+        exit: exit,
+        update: groups
       };
     }
   }, {
     key: "drawCircleImage",
     value: function drawCircleImage(groups, callbacks) {
-      var _this2 = this;
+      var _this4 = this;
 
       groups.filter(function (d) {
         return d.image;
       }).append('image').on("click", function (e, d) {
-        _this2.clickAction(e, d, callbacks);
+        _this4.clickAction(e, d, callbacks);
 
         e.stopPropagation();
       }).on("dblclick", function (e, d) {
-        _this2.dblClickAction(e, d, callbacks);
+        _this4.dblClickAction(e, d, callbacks);
 
         e.stopPropagation();
       }).attr('xlink:href', function (d) {
@@ -320,19 +365,26 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       });
     }
   }, {
+    key: "drawSelectRing",
+    value: function drawSelectRing(mode, groups, callbacks) {
+      var color = '#2ca9e1';
+      var width = 3;
+      var rings = this.selectRing(mode, groups);
+      rings.attr("r", function (d) {
+        return d.select ? d.circle.r + width * 2 : 0;
+      }).attr("fill", function (d) {
+        return color;
+      }).attr("stroke-width", function (d) {
+        return d.select ? width : 0;
+      }).attr("stroke", function (d) {
+        return color;
+      });
+    }
+  }, {
     key: "drawCircle",
-    value: function drawCircle(groups, callbacks) {
-      var _this3 = this;
-
-      groups.append('circle').on("click", function (e, d) {
-        _this3.clickAction(e, d, callbacks);
-
-        e.stopPropagation();
-      }).on("dblclick", function (e, d) {
-        _this3.dblClickAction(e, d, callbacks);
-
-        e.stopPropagation();
-      }).attr("r", function (d) {
+    value: function drawCircle(mode, groups, callbacks) {
+      var circles = this.circles(mode, groups, callbacks);
+      circles.attr("r", function (d) {
         return d.circle.r;
       }).attr("fill", function (d) {
         return d.circle.fill;
@@ -345,20 +397,9 @@ var Node = /*#__PURE__*/function (_NodeCore) {
     }
   }, {
     key: "drawCircleLabel",
-    value: function drawCircleLabel(groups, callbacks) {
-      var _this4 = this;
-
-      return groups.filter(function (d) {
-        return !d.image;
-      }).append('text').on("click", function (e, d) {
-        _this4.clickAction(e, d, callbacks);
-
-        e.stopPropagation();
-      }).on("dblclick", function (e, d) {
-        _this4.dblClickAction(e, d, callbacks);
-
-        e.stopPropagation();
-      }).attr("x", function (d) {
+    value: function drawCircleLabel(mode, groups, callbacks) {
+      var labels = this.circleLabels(mode, groups, callbacks);
+      labels.attr("x", function (d) {
         return d.label.x;
       }).attr("y", function (d) {
         return d.label.y + d.label.font.size;
@@ -369,18 +410,38 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       });
     }
   }, {
+    key: "drawOperators",
+    value: function drawOperators(groups, callbacks) {}
+  }, {
     key: "drawEnter",
     value: function drawEnter(groups, callbacks) {
       groups.call(d3.drag().on("start", callbacks.dragStarted).on("drag", callbacks.dragged).on("end", callbacks.dragEnded));
-      this.drawCircle(groups, callbacks);
-      this.drawCircleLabel(groups, callbacks);
+      this.drawSelectRing('enter', groups, callbacks);
+      this.drawCircle('enter', groups, callbacks);
+      this.drawCircleLabel('enter', groups, callbacks);
+      this.drawOperators(groups, callbacks);
       return groups;
+    }
+  }, {
+    key: "drawUpdate",
+    value: function drawUpdate(groups) {
+      this.drawSelectRing('update', groups);
+      this.drawCircle('update', groups);
+      this.drawCircleLabel('update', groups);
+      this.drawOperators(groups);
+    }
+  }, {
+    key: "drawRemove",
+    value: function drawRemove(groups) {
+      groups.remove();
     }
   }, {
     key: "draw",
     value: function draw(place, data, callbacks) {
       var groups = this.drawGroup(place, data);
+      this.drawRemove(groups.exit);
       this.drawEnter(groups.enter, callbacks);
+      this.drawUpdate(groups.update, callbacks);
       return place.selectAll("g.ng-node");
     }
   }, {

@@ -61,7 +61,8 @@ export default function App() {
             callbacks: {
                 node: {
                     click: (node)=> {
-                        console.log(node);
+                        node.select = !node.select;
+                        setGraphData({...graph_data});
                     }
                 }
             }

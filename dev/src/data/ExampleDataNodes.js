@@ -3,14 +3,14 @@ class ExampleDataNodes {
         return {
             r: r || 33,
             fill: '#eeeeee',
-            stroke: { color: '#888888', width: 1 },
+            stroke: { color: '#cccccc', width: 5 },
         };
     }
     makeData () {
         let defaultCircle = {
             r: 33,
             fill: '#eeeeee',
-            stroke: { color: '#888888', width: 1 },
+            stroke: { color: '#cccccc', width: 3 },
         };
 
         return [

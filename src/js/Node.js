@@ -195,6 +195,52 @@ export default class Node extends NodeCore {
             .attr('xlink:href', (d) => { return '#circle-' + d; });
     }
     /////
+    ///// get element
+    /////
+    selectRing (mode, groups) {
+        if (mode==='enter')
+            return groups
+            .append('circle')
+            .attr('class', 'select-ring');
+
+        return groups.select("circle.select-ring");
+    }
+    circles (mode, groups, callbacks) {
+        if (mode==='enter')
+            return groups
+                .append('circle')
+                .on("click", (e, d) => {
+                    this.clickAction(e, d, callbacks);
+                    e.stopPropagation();
+                })
+                .on("dblclick", (e, d) => {
+                    this.dblClickAction(e, d, callbacks);
+                    e.stopPropagation();
+                })
+                .attr('class', 'base');
+
+        return groups.select("circle.base");
+    }
+    circleLabels (mode, groups, callbacks) {
+        if (mode==='enter')
+            return groups
+            .filter((d) => {
+                return !d.image;
+            })
+            .append('text')
+            .on("click", (e, d) => {
+                this.clickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("dblclick", (e, d) => {
+                this.dblClickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .attr('class', 'label');
+
+        return groups.select("text.label");
+    }
+    /////
     ///// draw
     /////
     clickAction (e, d, callbacks) {
@@ -228,9 +274,11 @@ export default class Node extends NodeCore {
         }
     }
     drawGroup (place, data) {
-        let enter =  place
+        let groups =  place
             .selectAll("g.ng-node")
-            .data(data, (d) => { return d.id; })
+            .data(data, (d) => { return d.id; });
+
+        let enter = groups
             .enter()
             .append("g")
             .attr('class', 'ng-node');
@@ -243,6 +291,7 @@ export default class Node extends NodeCore {
         return {
             enter: enter,
             exit: exit,
+            update: groups,
         };
     }
     drawCircleImage (groups, callbacks) {
@@ -278,17 +327,30 @@ export default class Node extends NodeCore {
                 return d.image.y;
             });
     }
-    drawCircle (groups, callbacks) {
-        groups
-            .append('circle')
-            .on("click", (e, d) => {
-                this.clickAction(e, d, callbacks);
-                e.stopPropagation();
+    drawSelectRing (mode, groups, callbacks) {
+        const color = '#2ca9e1';
+        const width = 3;
+
+        const rings = this.selectRing(mode, groups);
+
+        rings
+            .attr("r", (d) => {
+                return d.select ? d.circle.r + (width * 2)  : 0;
             })
-            .on("dblclick", (e, d) => {
-                this.dblClickAction(e, d, callbacks);
-                e.stopPropagation();
+            .attr("fill", (d) => {
+                return color;
             })
+            .attr("stroke-width", (d) => {
+                return d.select ? width  : 0;
+            })
+            .attr("stroke", (d) => {
+                return color;
+            });
+    }
+    drawCircle (mode, groups, callbacks) {
+        const circles = this.circles(mode, groups, callbacks);
+
+        circles
             .attr("r", (d) => {
                 return d.circle.r;
             })
@@ -304,20 +366,10 @@ export default class Node extends NodeCore {
 
         this.drawCircleImage(groups, callbacks);
     }
-    drawCircleLabel (groups, callbacks) {
-        return groups
-            .filter((d) => {
-                return !d.image;
-            })
-            .append('text')
-            .on("click", (e, d) => {
-                this.clickAction(e, d, callbacks);
-                e.stopPropagation();
-            })
-            .on("dblclick", (e, d) => {
-                this.dblClickAction(e, d, callbacks);
-                e.stopPropagation();
-            })
+    drawCircleLabel (mode, groups, callbacks) {
+        const labels = this.circleLabels(mode, groups, callbacks);
+
+        labels
             .attr("x", (d) => {
                 return d.label.x;
             })
@@ -331,6 +383,7 @@ export default class Node extends NodeCore {
                 return d.label.text;
             });
     }
+    drawOperators (groups, callbacks) {}
     drawEnter (groups, callbacks) {
         groups.call(d3
                     .drag()
@@ -338,15 +391,35 @@ export default class Node extends NodeCore {
                     .on("drag", callbacks.dragged)
                     .on("end", callbacks.dragEnded));
 
-        this.drawCircle(groups, callbacks);
-        this.drawCircleLabel(groups, callbacks);
+        this.drawSelectRing('enter', groups, callbacks);
+
+        this.drawCircle('enter', groups, callbacks);
+
+        this.drawCircleLabel('enter', groups, callbacks);
+
+        this.drawOperators(groups, callbacks);
 
         return groups;
+    }
+    drawUpdate (groups) {
+
+        this.drawSelectRing('update', groups);
+
+        this.drawCircle('update', groups);
+
+        this.drawCircleLabel('update', groups);
+
+        this.drawOperators(groups);
+    }
+    drawRemove (groups) {
+        groups.remove() ;
     }
     draw (place, data, callbacks) {
         let groups = this.drawGroup(place, data);
 
+        this.drawRemove(groups.exit);
         this.drawEnter(groups.enter, callbacks);
+        this.drawUpdate(groups.update, callbacks);
 
         return place.selectAll("g.ng-node");
     }
