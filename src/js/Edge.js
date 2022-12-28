@@ -5,8 +5,8 @@ import Geometry from './Geometry.js';
 class EdgeCore {
     constructor (params) {
         // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
-        this.line_width = params.width || 6;
-        this.line_color = params.color || '#eeeeee';
+        this.line_width = (params && params.width) ? params.width : 6;
+        this.line_color = (params && params.color) ? params.color : '#eeeeee';
     }
     makeDataLine (data) {
         const line = {

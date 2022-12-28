@@ -42,8 +42,8 @@ var EdgeCore = /*#__PURE__*/function () {
     _classCallCheck(this, EdgeCore);
 
     // TODO: 回避措置コード。本来は line_color はデータに持たせるべき。
-    this.line_width = params.width || 6;
-    this.line_color = params.color || '#eeeeee';
+    this.line_width = params && params.width ? params.width : 6;
+    this.line_color = params && params.color ? params.color : '#eeeeee';
   }
 
   _createClass(EdgeCore, [{
