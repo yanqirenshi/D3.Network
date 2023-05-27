@@ -80,6 +80,10 @@ export default class Edge extends EdgeCore {
             this.d3line = d3
             .line()
             .x(function(d) {
+                console.log('x ----------------');
+                console.log(d);
+                console.log(d[0]);
+                console.log(typeof d[0]);
                 return d[0];
             })
             .y(function(d) {

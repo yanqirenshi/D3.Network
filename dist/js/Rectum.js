@@ -115,8 +115,6 @@ var Rectum = /*#__PURE__*/function (_Colon) {
         var simulation = this.simulation;
         this.callbacks = simulation.makeDragAndDropCallbacks(this._callbacks);
       }
-      console.log('---------------');
-      console.log(this.callbacks);
       return this.callbacks;
     }
     /* ******** */

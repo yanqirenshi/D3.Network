@@ -89,6 +89,10 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
     key: "getD3Line",
     value: function getD3Line() {
       if (!this.d3line) this.d3line = d3.line().x(function (d) {
+        console.log('x ----------------');
+        console.log(d);
+        console.log(d[0]);
+        console.log(_typeof(d[0]));
         return d[0];
       }).y(function (d) {
         return d[1];

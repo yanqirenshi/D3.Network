@@ -68,8 +68,7 @@ export default class Rectum extends Colon {
             let simulation = this.simulation;
             this.callbacks = simulation.makeDragAndDropCallbacks(this._callbacks);
         }
-        console.log('---------------');
-        console.log(this.callbacks);
+
         return this.callbacks;
     }
     /* ******** */
