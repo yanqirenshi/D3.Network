@@ -259,6 +259,22 @@ var Node = /*#__PURE__*/function (_NodeCore) {
         _this2.dblClickAction(e, d, callbacks);
 
         e.stopPropagation();
+      }).on("mousedown", function (e, d) {
+        _this2.mouseDownAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("mouseup", function (e, d) {
+        _this2.mouseUpAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("mouseover", function (e, d) {
+        _this2.mouseOverAction(e, d, callbacks);
+
+        e.stopPropagation();
+      }).on("mouseout", function (e, d) {
+        _this2.mouseOutAction(e, d, callbacks);
+
+        e.stopPropagation();
       }).attr('class', 'base');
       return groups.select("circle.base");
     }
@@ -280,7 +296,7 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       }).attr('class', 'label');
       return groups.select("text.label");
     } /////
-    ///// draw
+    ///// Events
     /////
 
   }, {
@@ -319,6 +335,33 @@ var Node = /*#__PURE__*/function (_NodeCore) {
         return;
       }
     }
+  }, {
+    key: "mouseDownAction",
+    value: function mouseDownAction(e, d, callbacks) {
+      if (!callbacks || !callbacks.node || !callbacks.node.mouseDown) return;
+      callbacks.node.mouseDown(d, e);
+    }
+  }, {
+    key: "mouseUpAction",
+    value: function mouseUpAction(e, d, callbacks) {
+      if (!callbacks || !callbacks.node || !callbacks.node.mouseUp) return;
+      callbacks.node.mouseUp(d, e);
+    }
+  }, {
+    key: "mouseOverAction",
+    value: function mouseOverAction(e, d, callbacks) {
+      if (!callbacks || !callbacks.node || !callbacks.node.mouseOver) return;
+      callbacks.node.mouseOver(d, e);
+    }
+  }, {
+    key: "mouseOutAction",
+    value: function mouseOutAction(e, d, callbacks) {
+      if (!callbacks || !callbacks.node || !callbacks.node.mouseOut) return;
+      callbacks.node.mouseOut(d, e);
+    } /////
+    ///// draw
+    /////
+
   }, {
     key: "drawGroup",
     value: function drawGroup(place, data) {

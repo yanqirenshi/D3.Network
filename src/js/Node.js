@@ -208,16 +208,32 @@ export default class Node extends NodeCore {
     circles (mode, groups, callbacks) {
         if (mode==='enter')
             return groups
-                .append('circle')
-                .on("click", (e, d) => {
-                    this.clickAction(e, d, callbacks);
-                    e.stopPropagation();
-                })
-                .on("dblclick", (e, d) => {
-                    this.dblClickAction(e, d, callbacks);
-                    e.stopPropagation();
-                })
-                .attr('class', 'base');
+            .append('circle')
+            .on("click", (e, d) => {
+                this.clickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("dblclick", (e, d) => {
+                this.dblClickAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("mousedown", (e, d) => {
+                this.mouseDownAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("mouseup", (e, d) => {
+                this.mouseUpAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("mouseover", (e, d) => {
+                this.mouseOverAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .on("mouseout", (e, d) => {
+                this.mouseOutAction(e, d, callbacks);
+                e.stopPropagation();
+            })
+            .attr('class', 'base');
 
         return groups.select("circle.base");
     }
@@ -241,7 +257,7 @@ export default class Node extends NodeCore {
         return groups.select("text.label");
     }
     /////
-    ///// draw
+    ///// Events
     /////
     clickAction (e, d, callbacks) {
         if (d.link) {
@@ -273,6 +289,33 @@ export default class Node extends NodeCore {
             return;
         }
     }
+    mouseDownAction (e, d, callbacks) {
+        if (!callbacks || !callbacks.node || !callbacks.node.mouseDown)
+            return;
+
+        callbacks.node.mouseDown(d, e);
+    }
+    mouseUpAction (e, d, callbacks) {
+        if (!callbacks || !callbacks.node || !callbacks.node.mouseUp)
+            return;
+
+        callbacks.node.mouseUp(d, e);
+    }
+    mouseOverAction (e, d, callbacks) {
+        if (!callbacks || !callbacks.node || !callbacks.node.mouseOver)
+            return;
+
+        callbacks.node.mouseOver(d, e);
+    }
+    mouseOutAction (e, d, callbacks) {
+        if (!callbacks || !callbacks.node || !callbacks.node.mouseOut)
+            return;
+
+        callbacks.node.mouseOut(d, e);
+    }
+    /////
+    ///// draw
+    /////
     drawGroup (place, data) {
         let groups =  place
             .selectAll("g.ng-node")
