@@ -89,13 +89,11 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
     key: "getD3Line",
     value: function getD3Line() {
       if (!this.d3line) this.d3line = d3.line().x(function (d) {
-        console.log('x ----------------');
-        console.log(d);
-        console.log(d[0]);
-        console.log(_typeof(d[0]));
-        return d[0];
+        // TODO: isNaN が発生する。直さな。。。
+        return isNaN(d[0]) ? 0 : d[0];
       }).y(function (d) {
-        return d[1];
+        // TODO: isNaN が発生する。直さな。。。
+        return isNaN(d[1]) ? 0 : d[1];
       });
       return this.d3line;
     }
