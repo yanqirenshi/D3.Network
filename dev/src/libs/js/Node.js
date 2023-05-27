@@ -217,14 +217,6 @@ export default class Node extends NodeCore {
                 this.dblClickAction(e, d, callbacks);
                 e.stopPropagation();
             })
-            .on("mousedown", (e, d) => {
-                this.mouseDownAction(e, d, callbacks);
-                e.stopPropagation();
-            })
-            .on("mouseup", (e, d) => {
-                this.mouseUpAction(e, d, callbacks);
-                e.stopPropagation();
-            })
             .on("mouseover", (e, d) => {
                 this.mouseOverAction(e, d, callbacks);
                 e.stopPropagation();
@@ -288,18 +280,6 @@ export default class Node extends NodeCore {
             callbacks.node.dblclick(d, e);
             return;
         }
-    }
-    mouseDownAction (e, d, callbacks) {
-        if (!callbacks || !callbacks.node || !callbacks.node.mouseDown)
-            return;
-
-        callbacks.node.mouseDown(d, e);
-    }
-    mouseUpAction (e, d, callbacks) {
-        if (!callbacks || !callbacks.node || !callbacks.node.mouseUp)
-            return;
-
-        callbacks.node.mouseUp(d, e);
     }
     mouseOverAction (e, d, callbacks) {
         if (!callbacks || !callbacks.node || !callbacks.node.mouseOver)

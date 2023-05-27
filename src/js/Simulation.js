@@ -39,6 +39,10 @@ export default class Simulation {
 
             d.fx = d.x;
             d.fy = d.y;
+
+            if (callback && callback.node && callback.node.dragStarted)
+                callback.node.dragStarted(d, event);
+
         };
 
         let dragged = (event, d) => {
@@ -47,6 +51,9 @@ export default class Simulation {
 
             d.fx = event.x;
             d.fy = event.y;
+
+            if (callback && callback.node && callback.node.dragged)
+                callback.node.dragged(d, event);
         };
 
         let dragEnded = (event, d) => {
@@ -60,6 +67,9 @@ export default class Simulation {
                 d.fx = null;
                 d.fy = null;
             }
+
+            if (callback && callback.node && callback.node.dragEnded)
+                callback.node.dragEnded(d, event);
         };
 
         let out = {

@@ -221,12 +221,6 @@ var Node = /*#__PURE__*/function (_NodeCore) {
       }).on("dblclick", function (e, d) {
         _this2.dblClickAction(e, d, callbacks);
         e.stopPropagation();
-      }).on("mousedown", function (e, d) {
-        _this2.mouseDownAction(e, d, callbacks);
-        e.stopPropagation();
-      }).on("mouseup", function (e, d) {
-        _this2.mouseUpAction(e, d, callbacks);
-        e.stopPropagation();
       }).on("mouseover", function (e, d) {
         _this2.mouseOverAction(e, d, callbacks);
         e.stopPropagation();
@@ -285,18 +279,6 @@ var Node = /*#__PURE__*/function (_NodeCore) {
         callbacks.node.dblclick(d, e);
         return;
       }
-    }
-  }, {
-    key: "mouseDownAction",
-    value: function mouseDownAction(e, d, callbacks) {
-      if (!callbacks || !callbacks.node || !callbacks.node.mouseDown) return;
-      callbacks.node.mouseDown(d, e);
-    }
-  }, {
-    key: "mouseUpAction",
-    value: function mouseUpAction(e, d, callbacks) {
-      if (!callbacks || !callbacks.node || !callbacks.node.mouseUp) return;
-      callbacks.node.mouseUp(d, e);
     }
   }, {
     key: "mouseOverAction",

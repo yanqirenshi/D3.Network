@@ -68,7 +68,8 @@ export default class Rectum extends Colon {
             let simulation = this.simulation;
             this.callbacks = simulation.makeDragAndDropCallbacks(this._callbacks);
         }
-
+        console.log('---------------');
+        console.log(this.callbacks);
         return this.callbacks;
     }
     /* ******** */
@@ -98,9 +99,7 @@ export default class Rectum extends Colon {
         this.node.drawClipCircle(place, nodes_data);
 
         this.selection_node
-            = this.node.draw(place,
-                             nodes_data,
-                             this.getCallbacks());
+            = this.node.draw(place, nodes_data, this.getCallbacks());
 
         this.simulation.nodes(nodes_data);
 

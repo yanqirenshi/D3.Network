@@ -36,7 +36,10 @@ export default function App() {
                 click: (node)=> {
                     node.select = !node.select;
                     setGraphData({...graph_data});
-                }
+                },
+                dragStarted: (d, event)=> console.log(['dragStarted', d, event]),
+                dragged: (d, event)=> console.log(['dragged', d, event]),
+                dragEnded: (d, event)=> console.log(['dragEnded', d, event]),
             }
         }));
 
