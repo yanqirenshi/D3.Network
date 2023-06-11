@@ -79,6 +79,7 @@ export default class Rectum extends Colon {
         this.edges(this._data.edges);
 
         this._drawed_at = new Date();
+
         return this;
     }
     drawedAt () {
