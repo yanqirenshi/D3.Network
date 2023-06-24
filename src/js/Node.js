@@ -52,6 +52,11 @@ class NodeCore {
             font: {
                 size: 44
             },
+            fill: '#333333',
+            stroke: {
+                color: '#333333',
+                width: 0,
+            },
             x: 0,
             y: 0,
         };
@@ -70,6 +75,12 @@ class NodeCore {
 
         if (option.label.font)
             label.font = option.label.font;
+
+        if (option.label.fill)
+            label.fill = option.label.fill;
+
+        if (option.label.stroke)
+            label.stroke = option.label.stroke;
 
         return label;
     }
@@ -401,6 +412,15 @@ export default class Node extends NodeCore {
             })
             .attr("font-size", (d) => {
                 return d.label.font.size;
+            })
+            .attr("fill", (d) => {
+                return d.label.fill;
+            })
+            .attr("stroke-width", (d) => {
+                return d.label.stroke.width;
+            })
+            .attr("stroke", (d) => {
+                return d.label.stroke.color;
             })
             .text((d) => {
                 return d.label.text;

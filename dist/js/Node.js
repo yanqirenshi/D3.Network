@@ -78,6 +78,11 @@ var NodeCore = /*#__PURE__*/function () {
         font: {
           size: 44
         },
+        fill: '#333333',
+        stroke: {
+          color: '#333333',
+          width: 0
+        },
         x: 0,
         y: 0
       };
@@ -86,6 +91,8 @@ var NodeCore = /*#__PURE__*/function () {
       if (option.label.x) label.x = option.label.x;
       if (option.label.y) label.y = option.label.y;
       if (option.label.font) label.font = option.label.font;
+      if (option.label.fill) label.fill = option.label.fill;
+      if (option.label.stroke) label.stroke = option.label.stroke;
       return label;
     }
   }, {
@@ -378,6 +385,12 @@ var Node = /*#__PURE__*/function (_NodeCore) {
         return d.label.y + d.label.font.size;
       }).attr("font-size", function (d) {
         return d.label.font.size;
+      }).attr("fill", function (d) {
+        return d.label.fill;
+      }).attr("stroke-width", function (d) {
+        return d.label.stroke.width;
+      }).attr("stroke", function (d) {
+        return d.label.stroke.color;
       }).text(function (d) {
         return d.label.text;
       });
