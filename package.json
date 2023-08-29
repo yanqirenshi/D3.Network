@@ -1,6 +1,6 @@
 {
     "name": "@yanqirenshi/d3.network",
-    "version": "0.3.18",
+    "version": "0.4.0",
     "description": "See `src/index.html`",
     "main": "dist/index.js",
     "directories": {
@@ -22,19 +22,18 @@
     },
     "homepage": "https://github.com/yanqirenshi/D3.Network#readme",
     "peerDependencies": {
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1"
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "dependencies": {
         "react-measure": "^2.5.2",
-        "@yanqirenshi/assh0le": "^0.2.13"
+        "@yanqirenshi/assh0le": "^0.3.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.10",
         "@babel/core": "^7.12.10",
         "@babel/preset-env": "^7.12.11",
         "@babel/preset-react": "^7.12.10",
-        "babel-loader": "^8.2.2",
-        "react-dom": "^17.0.1"
+        "babel-loader": "^8.2.2"
     }
 }
