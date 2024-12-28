@@ -121,11 +121,24 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     /*  Data    */
     /* ******** */
   }, {
-    key: "draw",
-    value: function draw() {
+    key: "draw_before",
+    value: function draw_before() {}
+  }, {
+    key: "draw_core",
+    value: function draw_core() {
       this.nodes(this._data.nodes);
       this.edges(this._data.edges);
       this._drawed_at = new Date();
+    }
+  }, {
+    key: "draw_after",
+    value: function draw_after() {}
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.draw_before();
+      this.draw_core();
+      this.draw_after();
       return this;
     }
   }, {

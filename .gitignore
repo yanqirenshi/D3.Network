@@ -8,3 +8,5 @@ example/node_modules
 dev/node_modules
 
 dev/.eslintcache
+
+dev/.env*
