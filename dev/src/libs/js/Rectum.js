@@ -105,7 +105,7 @@ export default class Rectum extends Colon {
         let place = this.layer('foreground');
 
         // TODO: これは D3Network でデータを管理すべき。
-        this.node.drawClipCircle(place, nodes_data);
+        this.node.drawClipCircle(this.d3Element(), nodes_data);
 
         this.selection_node
             = this.node.draw(place, nodes_data, this.getCallbacks());
