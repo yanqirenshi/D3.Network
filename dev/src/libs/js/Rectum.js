@@ -74,18 +74,20 @@ export default class Rectum extends Colon {
     /* ******** */
     /*  Data    */
     /* ******** */
-    draw_before () {}
-    draw_core () {
-        this.nodes(this._data.nodes);
-        this.edges(this._data.edges);
+    draw_before (data) {}
+    draw_core (data) {
+        this.nodes(data.nodes);
+        this.edges(data.edges);
 
         this._drawed_at = new Date();
     }
-    draw_after () {}
+    draw_after (data) {}
     draw () {
-        this.draw_before();
-        this.draw_core();
-        this.draw_after();
+        const data = this._data;
+
+        this.draw_before(data);
+        this.draw_core(data);
+        this.draw_after(data);
 
         return this;
     }

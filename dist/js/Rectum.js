@@ -122,23 +122,24 @@ var Rectum = /*#__PURE__*/function (_Colon) {
     /* ******** */
   }, {
     key: "draw_before",
-    value: function draw_before() {}
+    value: function draw_before(data) {}
   }, {
     key: "draw_core",
-    value: function draw_core() {
-      this.nodes(this._data.nodes);
-      this.edges(this._data.edges);
+    value: function draw_core(data) {
+      this.nodes(data.nodes);
+      this.edges(data.edges);
       this._drawed_at = new Date();
     }
   }, {
     key: "draw_after",
-    value: function draw_after() {}
+    value: function draw_after(data) {}
   }, {
     key: "draw",
     value: function draw() {
-      this.draw_before();
-      this.draw_core();
-      this.draw_after();
+      var data = this._data;
+      this.draw_before(data);
+      this.draw_core(data);
+      this.draw_after(data);
       return this;
     }
   }, {
