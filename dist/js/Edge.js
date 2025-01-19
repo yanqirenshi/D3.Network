@@ -98,16 +98,24 @@ var Edge = /*#__PURE__*/function (_EdgeCore) {
       return this.d3line;
     }
   }, {
-    key: "draw",
-    value: function draw(place, data) {
+    key: "drawLine",
+    value: function drawLine(selection) {
       var _this2 = this;
-      this.elements = place.selectAll("path.ng-edge").data(data, function (d) {
-        return d.id;
-      }).enter().append('path').attr('class', 'ng-edge').attr("stroke-width", function (d) {
+      selection.attr("stroke-width", function (d) {
         return d.line.stroke.width;
       }).attr("stroke", function (d) {
         return _this2.line_color;
       }).attr('marker-end', "url(#arrowhead)");
+    }
+  }, {
+    key: "draw",
+    value: function draw(place, data) {
+      var selection = this.elements = place.selectAll("path.ng-edge").data(data, function (d) {
+        return d.id;
+      });
+      selection.remove();
+      this.drawLine(selection);
+      this.drawLine(selection.enter().append('path').attr('class', 'ng-edge'));
       return place.selectAll("path.ng-edge");
     }
   }, {

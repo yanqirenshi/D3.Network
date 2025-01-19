@@ -90,15 +90,8 @@ export default class Edge extends EdgeCore {
 
         return this.d3line;
     }
-    draw (place, data) {
-        this.elements = place
-            .selectAll("path.ng-edge")
-            .data(data, (d) => {
-                return d.id;
-            })
-            .enter()
-            .append('path')
-            .attr('class', 'ng-edge')
+    drawLine (selection) {
+        selection
             .attr("stroke-width", (d) => {
                 return d.line.stroke.width;
             })
@@ -106,6 +99,23 @@ export default class Edge extends EdgeCore {
                 return this.line_color;
             })
             .attr( 'marker-end', "url(#arrowhead)");
+    }
+    draw (place, data) {
+        const selection = this.elements = place
+            .selectAll("path.ng-edge")
+            .data(data, (d) => {
+                return d.id;
+            });
+
+        selection.remove() ;
+
+        this.drawLine(selection);
+
+        this.drawLine(
+            selection
+                .enter()
+                .append('path')
+                .attr('class', 'ng-edge'));
 
         return place.selectAll("path.ng-edge");
     }
